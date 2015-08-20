@@ -1,74 +1,43 @@
 <!-- partials/home.html -->
 <section class="home">
     <h2>Recherche</h2>
-    <div class="col-lg-6">
+    <div class="col-lg-5">
         <div class="well bs-component">
-            
-            <form class="form-horizontal">
+            <form name="searchForm" ng-submit="searchSubmit()">
                 <fieldset>
                     <legend>Rechercher</legend>
                     <div class="form-group">
-                        <input class="form-control form-departure" id="departure" type="text" placeholder="Departure">
-                        <input class="form-control form-arrival" id="departure" type="text" placeholder="Arrival(s?)">
+                        <input class="form-control form-departure" name="departure" ng-model="departure" type="text" placeholder="Departure">
+                        <input class="form-control form-arrival" name="arrival" ng-model="arrival" type="text" placeholder="Arrival(s?)">
                     </div>
-                    <div class="form-group">
-                        <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-id-switch-onText bootstrap-switch-animate bootstrap-switch-off" style="width: 188px;">
-                            <div class="bootstrap-switch-container" style="width: 279px; margin-left: -93px;">
-                                <span class="bootstrap-switch-handle-on bootstrap-switch-primary" style="width: 93px;">aller retour</span>
-                                <span class="bootstrap-switch-label" style="width: 93px;">&nbsp;</span>
-                                <span class="bootstrap-switch-handle-off bootstrap-switch-default" style="width: 93px;">OFF</span>
-                                <input id="switch-onText" type="checkbox" checked="" data-on-text="Yes"></div></div>
-                    </div>
-                    <div class="form-group">
-                      <label for="textArea" class="col-lg-2 control-label">Textarea</label>
-                      <div class="col-lg-10">
-                        <textarea class="form-control" rows="3" id="textArea"></textarea>
-                        <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-lg-2 control-label">Radios</label>
-                      <div class="col-lg-10">
-                        <div class="radio">
-                          <label>
+                        <div class="col-lg-6">
+                            <label>   
                             <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                            Option one is this
+                            Meilleure semaine
                           </label>
                         </div>
-                        <div class="radio">
+                        <div class="col-lg-6">
                           <label>
                             <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                            Option two can be something else
+                            Dates fixes
                           </label>
                         </div>
                       </div>
-                    </div>
+                    
+                    
                     <div class="form-group">
-                      <label for="select" class="col-lg-2 control-label">Selects</label>
-                      <div class="col-lg-10">
-                        <select class="form-control" id="select">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                        </select>
-                        <br>
-                        <select multiple="" class="form-control">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                        </select>
-                      </div>
+                        <div class="col-lg-6">
+                            <input type="text" ng-model="date" ng-date-picker/>{{departuredate}}
+                        </div>
+                        <div class="col-lg-6">
+                            <input class="form-control"  id="text"placeholder="Arrivée au plus tard" ng-model="arrivaldate"></input>
+                        </div>
                     </div>
+            
                     <div class="form-group">
-                      <div class="col-lg-10 col-lg-offset-2">
-                        <button type="reset" class="btn btn-default">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                      </div>
+                        <input class="btn btn-primary" type="submit" value="Rechercher">
                     </div>
+            
                   </fieldset>
             </form>
             
