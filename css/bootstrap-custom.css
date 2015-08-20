@@ -1,0 +1,17 @@
+
+.form-departure {
+    border-bottom-width: 0.99px;
+    border-radius:0px;
+    border-top-left-radius:3px;
+    border-top-right-radius:3px;
+    height: 50px;
+    font-size:large;
+}
+.form-arrival {
+    border-top-width: 0.75px;
+    border-radius:0px;
+    border-bottom-left-radius:3px;
+    border-bottom-right-radius:3px;
+    height: 50px;
+    font-size:large;
+}
