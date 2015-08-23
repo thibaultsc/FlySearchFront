@@ -1,51 +1,113 @@
 <!-- partials/home.html -->
 <section class="home">
-    <h2>Recherche</h2>
+    <h2></h2>
+    
+    <!-- Left Part / Main Form -->
+    <div class="col-lg-1"></div>
     <div class="col-lg-5">
-        <div class="well bs-component">
+        <div class="well" style="height:330px;">
             <form name="searchForm" ng-submit="searchSubmit()">
                 <fieldset>
-                    <legend>Rechercher</legend>
+                    <legend>Rechercher le vol parfait</legend>
                     <div class="form-group">
-                        <input class="form-control form-departure" name="departure" ng-model="departure" type="text" placeholder="Departure">
-                        <input class="form-control form-arrival" name="arrival" ng-model="arrival" type="text" placeholder="Arrival(s?)">
+                        <input class="form-control form-departure" name="departure" ng-model="departure" type="text" placeholder="Departure" ng-focus="departureSelect($event)" ng-change="findDeparture()">
+                        <input class="form-control form-arrival" name="arrival" ng-model="arrival" type="text" placeholder="Arrival(s?)" ng-focus="arrivalSelect($event)" ng-change="findArrival()">
                     </div>
-                        <div class="col-lg-6">
-                            <label>   
-                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                            Meilleure semaine
-                          </label>
+                    <div class="row">
+                        <div ng-controller="DatepickerDemoCtrl">
+                            <div class="col-md-6">
+                                <p class="input-group">
+                                  <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                  </span>
+                                  <input type="text" class="form-control" datepicker-popup="EEE dd MMM yyyy" ng-model="departuredate" is-open="status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" name="departuredate" readonly="readonly" style="background-color:white;" ng-click="open($event)"/>
+
+                                </p>
+                            </div>
                         </div>
-                        <div class="col-lg-6">
-                          <label>
-                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                            Dates fixes
-                          </label>
-                        </div>
-                      </div>
-                    
-                    
-                    <div class="form-group">
-                        <div class="col-lg-6">
-                            <input type="text" ng-model="date" ng-date-picker/>{{departuredate}}
-                        </div>
-                        <div class="col-lg-6">
-                            <input class="form-control"  id="text"placeholder="Arrivée au plus tard" ng-model="arrivaldate"></input>
+                        <div ng-controller="DatepickerDemoCtrl">
+                            <div class="col-md-6">
+                                <p class="input-group">
+                                  <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                  </span>
+                                  <input type="text" class="form-control" datepicker-popup="EEE dd MMM yyyy" ng-model="arrivaldate" is-open="status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" name="arrivaldate" readonly="readonly" style="background-color:white;" ng-click="open($event)"/>
+
+                                </p>
+                            </div>
                         </div>
                     </div>
-            
+                    <p class="input-group">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-user"></i></button>
+                        </span>
+                        <input type="text" class="form-control" name="voaygeurDetails" ng-model="voyageurDetails" readonly="readonly" style="background-color:white;" ng-focus="peopleSelect()"/>
+                    </p>
+                    
                     <div class="form-group">
-                        <input class="btn btn-primary" type="submit" value="Rechercher">
+                        <p class="input-group">
+                        <input class="btn btn-primary" type="submit" value="Trouver" ng-focus="init()">
+                        </p>
                     </div>
             
                   </fieldset>
             </form>
-            
         </div>
     </div>
-    <div class="col-lg-6">
-    <input class="form-control form-departure" id="departure" type="text" placeholder="Departure">
-    <input class="form-control form-arrival" id="departure" type="text" placeholder="Arrival(s?)">
-    </div>
     
+    <!-- Right Part / Details  -->
+    
+    <div class="col-lg-5">
+        <div class="well" style="height:330px;" ng-show="anySelected">
+            <div ng-show="departureSelected">
+                <fieldset>
+                    <legend>Les départs favoris</legend>
+                    <div ng-repeat="favoriteDeparture in favoriteDepartures">
+                        <input type="text" class="form-control" value="{{favoriteDeparture.PlaceName}}" readonly="readonly" style="background-color:white; border-radius:0px;" ng-focus="airportSelect('{{favoriteDeparture.PlaceName}}')"/>
+                    </div>
+                </fieldset>
+            </div>
+            <div ng-show="arrivalSelected">
+                <fieldset>
+                    <legend>Les destinations favorites</legend>
+                    <input type="text" class="form-control" value="Paris (PAR)" readonly="readonly" style="background-color:white; border-radius:0px;" ng-focus="airportSelect('Paris (PAR)')"/>
+                    <input type="text" class="form-control" value="Londres (LON)" readonly="readonly" style="background-color:white; border-radius:0px;" ng-focus="airportSelect('Londres (LON)')"/>
+                    <input type="text" class="form-control" value="New York (NYC)" readonly="readonly" style="background-color:white; border-radius:0px;" ng-focus="airportSelect('New York (NYC)')"/>
+                </fieldset>
+            </div>
+            <div ng-show="peopleSelected">
+                <fieldset>
+                    <legend>Vous ne voyagez pas seul ?</legend>
+                        <div class="form-group">
+                          <label for="select" class="control-label">Nombre d'adultes</label>
+                            <select class="form-control" id="select" ng-model="nbAdultes" ng-change="updatePeople()">
+                                <option>0</option>
+                                <option selected>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="select" class="control-label">Nombre d'enfants</label>
+                            <select class="form-control" id="select" ng-model="nbEnfants" ng-change="updatePeople()">
+                              <option>0</option>
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
+                        </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-1"></div>
 </section>

@@ -15,3 +15,7 @@
     height: 50px;
     font-size:large;
 }
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+.btn {
+    border-radius:0px;
+}
