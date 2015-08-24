@@ -12,6 +12,12 @@
                     <div class="form-group">
                         <input class="form-control form-departure" name="departure" ng-model="departure" type="text" placeholder="Departure" ng-focus="departureSelect($event)" ng-change="findDeparture()">
                         <input class="form-control form-arrival" name="arrival" ng-model="arrival" type="text" placeholder="Arrival(s?)" ng-focus="arrivalSelect($event)" ng-change="findArrival()">
+                        <ui-select multiple ng-model="user.selectedRetailers" ng-click="arrivalSelect($event)" theme="bootstrap"  required >
+                            <ui-select-match placeholder="Liste des arrivées possibles">{{ $item.PlaceName }} ({{ $item.PlaceName}})</ui-select-match>
+                            <ui-select-choices ng-hide=true repeat="retailer in favoriteDepartures" refresh="refreshRetailers($select.search)" refresh-delay="0">
+                                {{ retailer.PlaceName }} ({{ retailer.PlaceId }})
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                     <div class="row">
                         <div ng-controller="DatepickerDemoCtrl">
@@ -20,7 +26,7 @@
                                   <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                                   </span>
-                                  <input type="text" class="form-control" datepicker-popup="EEE dd MMM yyyy" ng-model="departuredate" is-open="status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" name="departuredate" readonly="readonly" style="background-color:white;" ng-click="open($event)"/>
+                                  <input type="text" class="form-control" datepicker-popup="EEE dd MMM yyyy" ng-model="departuredate" is-open="status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" name="departuredate" show-weeks=false readonly="readonly" style="background-color:white;" ng-click="open($event)"/>
 
                                 </p>
                             </div>
@@ -31,7 +37,7 @@
                                   <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                                   </span>
-                                  <input type="text" class="form-control" datepicker-popup="EEE dd MMM yyyy" ng-model="arrivaldate" is-open="status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" name="arrivaldate" readonly="readonly" style="background-color:white;" ng-click="open($event)"/>
+                                  <input type="text" class="form-control" datepicker-popup="EEE dd MMM yyyy" ng-model="arrivaldate" is-open="status.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" name="arrivaldate" readonly="readonly" show-weeks=false style="background-color:white;" ng-click="open($event)"/>
 
                                 </p>
                             </div>
@@ -80,7 +86,7 @@
                     <legend>Vous ne voyagez pas seul ?</legend>
                         <div class="form-group">
                           <label for="select" class="control-label">Nombre d'adultes</label>
-                            <select class="form-control" id="select" ng-model="nbAdultes" ng-change="updatePeople()">
+                            <select class="form-control" id="nbAdultes" ng-model="nbAdultes" ng-change="updatePeople()">
                                 <option>0</option>
                                 <option selected>1</option>
                                 <option>2</option>
@@ -96,8 +102,8 @@
                         </div>
                         <div class="form-group">
                           <label for="select" class="control-label">Nombre d'enfants</label>
-                            <select class="form-control" id="select" ng-model="nbEnfants" ng-change="updatePeople()">
-                              <option>0</option>
+                            <select class="form-control" id="nbEnfants" ng-model="nbEnfants" ng-change="updatePeople()">
+                              <option selected>0</option>
                               <option>1</option>
                               <option>2</option>
                               <option>3</option>

@@ -7,7 +7,7 @@
  */
 var flyWkApp = angular.module('flyWkApp', [
     // Dépendances du "module"
-    'ngRoute', 'flyWkAppControllers', 'ui.bootstrap'
+    'ngRoute', 'flyWkAppControllers', 'ui.bootstrap.datepicker', 'ngSanitize', 'ui.select'
 ]);
 
 
@@ -32,8 +32,6 @@ flyWkApp.config(['$routeProvider',
         });
     }
 ]);
-
-
 
 
 
