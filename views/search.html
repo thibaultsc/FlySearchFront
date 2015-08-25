@@ -10,14 +10,25 @@
                 <fieldset>
                     <legend>Rechercher le vol parfait</legend>
                     <div class="form-group">
+                        <!-- Old way to do
                         <input class="form-control form-departure" name="departure" ng-model="departure" type="text" placeholder="Departure" ng-focus="departureSelect($event)" ng-change="findDeparture()">
                         <input class="form-control form-arrival" name="arrival" ng-model="arrival" type="text" placeholder="Arrival(s?)" ng-focus="arrivalSelect($event)" ng-change="findArrival()">
-                        <ui-select multiple ng-model="user.selectedRetailers" ng-click="arrivalSelect($event)" theme="bootstrap"  required >
-                            <ui-select-match placeholder="Liste des arrivées possibles">{{ $item.PlaceName }} ({{ $item.PlaceName}})</ui-select-match>
-                            <ui-select-choices ng-hide=true repeat="retailer in favoriteDepartures" refresh="refreshRetailers($select.search)" refresh-delay="0">
-                                {{ retailer.PlaceName }} ({{ retailer.PlaceId }})
+                        -->
+                        
+                        <ui-select ng-model="search.departure" ng-click="departureSelect($event)" theme="bootstrap"  required >
+                            <ui-select-match placeholder="Départ">{{ search.departure.PlaceName }} ({{ search.departure.PlaceId }})</ui-select-match>
+                            <ui-select-choices repeat="departure in possibleDepartures" refresh="refreshPossibleDepartures($select.search)" refresh-delay="0">
+                                {{ departure.PlaceName }} ({{ departure.PlaceId }})
                             </ui-select-choices>
                         </ui-select>
+                        
+                        <ui-select multiple ng-model="search.arrivals" ng-click="arrivalSelect($event)" theme="bootstrap"  required >
+                            <ui-select-match placeholder="Liste des arrivées possibles">{{ $item.PlaceName }} ({{ $item.PlaceId}})</ui-select-match>
+                            <ui-select-choices repeat="arrival in possibleArrivals" refresh="refreshPossibleArrivals($select.search)" refresh-delay="0">
+                                {{ arrival.PlaceName }} ({{ arrival.PlaceId }})
+                            </ui-select-choices>
+                        </ui-select>
+
                     </div>
                     <div class="row">
                         <div ng-controller="DatepickerDemoCtrl">
