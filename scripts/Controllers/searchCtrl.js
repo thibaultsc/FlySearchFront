@@ -116,7 +116,7 @@ flyWkAppControllers.controller('searchCtrl', ['$scope', '$http', 'Restangular',
         $scope.refreshPossibleArrivals('');
         
         
-        var apiSearch = Restangular.all('api/fly_searchs');
+        var apiSearch = Restangular.all('api/fly_searches/create');
         
 
         

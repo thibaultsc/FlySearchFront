@@ -19,3 +19,88 @@
 .btn {
     border-radius:0px;
 }
+
+
+.fly-arrow{
+    height: 18px;
+    width: 107px;
+    background-image:url(../../views/arrows/Doc1_files/image001.png);
+}
+.arrow-blue-direct {
+    background-position: 0% 0%;
+}
+.arrow-blue-1 {
+    background-position: 0% 12.7%;
+}
+.arrow-blue-2 {
+    background-position: 0% 25.4%;
+}
+.arrow-green-direct {
+    background-position: 0% 38.1%;
+}
+.arrow-green-1 {
+    background-position: 0% 50.7%;
+}
+.arrow-green-2 {
+    background-position: 0% 63.4%;
+}
+.arrow-orange-direct {
+    background-position: 0% 76.1%;
+}
+.arrow-orange-1 {
+    background-position: 0% 88.4%;
+}
+.arrow-orange-2 {
+    background-position: 0% 100%;
+}
+
+
+time.icon
+{
+  font-size: 7px; /* change icon size */
+  display: block;
+  position: relative;
+  width: 8em;
+  height: 6em;
+  background-color: white;
+  overflow: hidden;
+  transform-origin: 50% 10%;
+}
+
+time.icon *
+{
+  display: block;
+  width: 100%;
+  font-size: 1em;
+  font-style: normal;
+  font-weight:bold;
+  text-align: center;
+}
+
+time.icon p
+{
+  position: absolute;
+  top: 0;
+  font-size: 1.3em;
+  color: #fff;
+  background-color: #fd9f1b;
+}
+
+time.icon em
+{
+  position: absolute;
+  bottom: 0em;
+  font-size: 1.5em;
+  color: #fd9f1b;
+}
+
+time.icon span
+{
+  width: 100%;
+  font-size: 2.8em;
+  letter-spacing: -0.05em;
+  padding-top: 0em;
+    font-weight:normal;
+  color: #2f2f2f;
+}
+
