@@ -11,11 +11,17 @@ flyWkAppControllers.controller('searchCtrl', ['$scope', '$http', 'Restangular',
             $scope.anySelected = false;
         }
         $scope.init();
+        
+        $scope.flySearch = {
+                departures: []//,
+                //arrivals: []
+        };
 
         var searchForm = $scope.searchForm;
-        $scope.departure = "Paris";
-        $scope.arrival = "New York";
-        $scope.voyageurDetailsFunc = function (a,b) {
+
+        $scope.voyageurDetailsFunc = function (a1,b1) {
+            var a = parseInt(a1);
+            var b = parseInt(b1);
             var details = "";
             if (a == 1) {
                 details = details + "1 Adulte";
@@ -37,30 +43,27 @@ flyWkAppControllers.controller('searchCtrl', ['$scope', '$http', 'Restangular',
             }
             return details; 
         }
-        $scope.nbAdultes = 1;
-        $scope.nbEnfants = 0;
-        $scope.voyageurDetails = $scope.voyageurDetailsFunc($scope.nbAdultes,$scope.nbEnfants);
         
         $scope.updatePeople = function() {
-            $scope.voyageurDetails = $scope.voyageurDetailsFunc($scope.nbAdultes,$scope.nbEnfants);
+            $scope.voyageurDetails = $scope.voyageurDetailsFunc($scope.flySearch.nbAdults,$scope.flySearch.nbChildren);
         };
+        $scope.flySearch.nbAdults = '1';
+        $scope.flySearch.nbChildren = '0';
+        $scope.updatePeople();
         
         
-        $scope.searchSubmit = function() {
-            $scope.departure = "Bruxelles";
-        };
         
         $scope.departureSelect = function($event) {
             $scope.init();
             $scope.departureSelected = true;
             $scope.anySelected = true;
-            $event.target.select();
+            //$event.target.select();
         };
         $scope.arrivalSelect = function($event) {
             $scope.init();
             $scope.arrivalSelected = true;
             $scope.anySelected = true;
-            $event.target.select();
+            //$event.target.select();
         };
         $scope.peopleSelect = function() {
             $scope.init();
@@ -78,32 +81,76 @@ flyWkAppControllers.controller('searchCtrl', ['$scope', '$http', 'Restangular',
             }
         };
         
-        var api = Restangular.all('api/users');
-        console.log(api);
-        
+        var apiAirports = Restangular.all('api/airports');
         
         $scope.possibleDepartures = [];
+        $scope.possibleArrivals = [];
+        $scope.favoriteArrivals = [{"name":"Bangkok (BKK)"},{"name":"New York (NYC)"},{"name":"Barcelone (BAR)"},{"name":"Dubai (DBX)"},{"name":"Hong Kong (HKK)"},{"name":"Budapest (BUD)"}];
+        $scope.favoriteDepartures = [{"name":"Bangkok (BKK)"},{"name":"New York (NYC)"},{"name":"Barcelone (BAR)"},{"name":"Dubai (DBX)"},{"name":"Hong Kong (HKK)"},{"name":"Budapest (BUD)"}];
+        
+        var retailersCache = {};
+        $scope.refreshPossibleDepartures = function (name) {
+            if (retailersCache[name]) {
+                $scope.createRetailers = retailersCache[name];
+                return;
+            }
+            
+            apiAirports.getList({ name: name }).then(function(retailers) {
+                retailersCache[name] = retailers;
+                $scope.possibleDepartures = retailers;
+            });
+        };
+        $scope.refreshPossibleArrivals = function (name) {
+            if (retailersCache[name]) {
+                $scope.createRetailers = retailersCache[name];
+                return;
+            }
+            
+            apiAirports.getList({ name: name }).then(function(retailers) {
+
+                $scope.possibleArrivals = retailers;
+            });
+        };
+
+        $scope.refreshPossibleDepartures('');
+        $scope.refreshPossibleArrivals('');
         
         
+        var apiSearch = Restangular.all('api/fly_searchs');
         
-        $scope.possibleDepartures = [{"PlaceId":"PARI","PlaceName":"Paris","CountryId":"FR","CityId":"PARI","CountryName":"France","PlaceNameEn":"Paris","RegionId":"","CityName":"Paris","CityNameEn":"Paris"},{"PlaceId":"CDG","PlaceName":"Paris Charles-de-Gaulle","CountryId":"FR","CityId":"PARI","CountryName":"France","PlaceNameEn":"Paris Charles de Gaulle","RegionId":"","CityName":"Paris","CityNameEn":"Paris"},{"PlaceId":"ORY","PlaceName":"Paris Orly","CountryId":"FR","CityId":"PARI","CountryName":"France","PlaceNameEn":"Paris Orly","RegionId":"","CityName":"Paris","CityNameEn":"Paris"},{"PlaceId":"BVA","PlaceName":"Paris Beauvais","CountryId":"FR","CityId":"PARI","CountryName":"France","PlaceNameEn":"Paris Beauvais","RegionId":"","CityName":"Paris","CityNameEn":"Paris"},{"PlaceId":"LTQ","PlaceName":"Le Touquet Paris Plag","CountryId":"FR","CityId":"LETO","CountryName":"France","PlaceNameEn":"Le Touquet Paris Plag","RegionId":"","CityName":"Le Touquet Paris Plag","CityNameEn":"Le Touquet Paris Plag"},{"PlaceId":"XCR","PlaceName":"Ch\u00E2lons-en-Champagne","CountryId":"FR","CityId":"XCRA","CountryName":"France","PlaceNameEn":"Ch\u00E2lons-en-Champagne","RegionId":"","CityName":"Ch\u00E2lons-en-Champagne","CityNameEn":"Ch\u00E2lons-en-Champagne"},{"PlaceId":"PIN","PlaceName":"Parintins","CountryId":"BR","CityId":"PINA","CountryName":"Br\u00E9sil","PlaceNameEn":"Parintins","RegionId":"","CityName":"Parintins","CityNameEn":"Parintins"},{"PlaceId":"YQU","PlaceName":"Grande Prairie","CountryId":"CA","CityId":"YQUA","CountryName":"Canada","PlaceNameEn":"Grande Prairie","RegionId":"","CityName":"Grande Prairie","CityNameEn":"Grande Prairie"}];
+
         
-        $scope.possibleArrivals = [{"PlaceId":"PARI","PlaceName":"Paris","CountryId":"FR","CityId":"PARI","CountryName":"France","PlaceNameEn":"Paris","RegionId":"","CityName":"Paris","CityNameEn":"Paris"},{"PlaceId":"CDG","PlaceName":"Paris Charles-de-Gaulle","CountryId":"FR","CityId":"PARI","CountryName":"France","PlaceNameEn":"Paris Charles de Gaulle","RegionId":"","CityName":"Paris","CityNameEn":"Paris"},{"PlaceId":"ORY","PlaceName":"Paris Orly","CountryId":"FR","CityId":"PARI","CountryName":"France","PlaceNameEn":"Paris Orly","RegionId":"","CityName":"Paris","CityNameEn":"Paris"},{"PlaceId":"BVA","PlaceName":"Paris Beauvais","CountryId":"FR","CityId":"PARI","CountryName":"France","PlaceNameEn":"Paris Beauvais","RegionId":"","CityName":"Paris","CityNameEn":"Paris"},{"PlaceId":"LTQ","PlaceName":"Le Touquet Paris Plag","CountryId":"FR","CityId":"LETO","CountryName":"France","PlaceNameEn":"Le Touquet Paris Plag","RegionId":"","CityName":"Le Touquet Paris Plag","CityNameEn":"Le Touquet Paris Plag"},{"PlaceId":"XCR","PlaceName":"Ch\u00E2lons-en-Champagne","CountryId":"FR","CityId":"XCRA","CountryName":"France","PlaceNameEn":"Ch\u00E2lons-en-Champagne","RegionId":"","CityName":"Ch\u00E2lons-en-Champagne","CityNameEn":"Ch\u00E2lons-en-Champagne"},{"PlaceId":"PIN","PlaceName":"Parintins","CountryId":"BR","CityId":"PINA","CountryName":"Br\u00E9sil","PlaceNameEn":"Parintins","RegionId":"","CityName":"Parintins","CityNameEn":"Parintins"},{"PlaceId":"YQU","PlaceName":"Grande Prairie","CountryId":"CA","CityId":"YQUA","CountryName":"Canada","PlaceNameEn":"Grande Prairie","RegionId":"","CityName":"Grande Prairie","CityNameEn":"Grande Prairie"}];
-        
-        $scope.favoriteDestinations = [{"name":"Bangkok (BKK)"},{"name":"New York (NYC)"},{"name":"Barcelone (BAR)"},{"name":"Dubai (DBX)"},{"name":"Hong Kong (HKK)"},{"name":"Budapest (BUD)"}];
-        
-        $scope.findDeparture = function () {
-        $http.jsonp("http://www.skyscanner.fr/dataservices/geo/v1.1/autosuggest/UK/fr-FR/"+$scope.departure+"?callback=JSON_CALLBACK")
-            .success( function(data) {
-            console.log(data.found);
-                //$scope.favoriteDepartures = [{"PlaceName":"Paris (PAR)"}];
-            })
-            .finally(function(data) {
-            console.log($scope.favoriteDepartures);
-                //$scope.favoriteDepartures = data;
-            })
-        
-        }
+        //  Fly Search creation
+        $scope.createFlySearch = function() {
+            var arrivals = [];
+            $scope.createViolations = [];
+            for (var i = 0; i < $scope.flySearch.arrivals.length; i++) {
+                arrivals.push($scope.flySearch.arrivals[i]['@id']);
+            }
+            
+            
+            var flySearch = {
+                departure: $scope.flySearch.departure['@id'],
+                arrivals : arrivals,
+                departureDate: new Date(), //$scope.flySearch.departureDate,
+                arrivalDate: new Date(), //$scope.flySearch.arrivalDate,
+                nbAdults: parseInt($scope.flySearch.nbAdults),
+                nbChildren: parseInt($scope.flySearch.nbChildren)
+            };
+
+            apiSearch.post(flySearch).then(function() {
+                $scope.createSuccess = true;
+                $scope.createViolations = [];
+
+                $scope.createFlySearchForm.$setPristine();
+                // show results
+
+            }, function(response) {
+                $scope.createSuccess = false;
+                $scope.createViolations = response.data.violations;
+            });
+        };
+
 
     }
 ]);

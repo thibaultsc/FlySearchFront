@@ -6,7 +6,7 @@
 
 flyWkApp.config(['RestangularProvider', function (RestangularProvider) {
         // The URL of the API endpoint
-        RestangularProvider.setBaseUrl('http://fripery.elasticbeanstalk.com/web');
+        RestangularProvider.setBaseUrl('http://localhost/flywk/web/app_dev.php/');
 
         // JSON-LD @id support
         RestangularProvider.setRestangularFields({

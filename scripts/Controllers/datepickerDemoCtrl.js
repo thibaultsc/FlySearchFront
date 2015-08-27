@@ -9,7 +9,7 @@ flyWkAppControllers.controller('DatepickerDemoCtrl', function ($scope) {
     $scope.departuredate = new Date() ;
     $scope.departuredate.setDate($scope.departuredate.getDate()+7);
     $scope.arrivaldate = new Date() ;
-    $scope.arrivaldate.setDate($scope.departuredate.getDate()+14);
+    $scope.arrivaldate.setDate($scope.departuredate.getDate()+7);
   };
   $scope.firstdate();
 

@@ -6,7 +6,7 @@
     <div class="col-lg-1"></div>
     <div class="col-lg-5">
         <div class="well" style="height:330px;">
-            <form name="searchForm" ng-submit="searchSubmit()">
+            <form name="searchForm" ng-submit="createFlySearch()">
                 <fieldset>
                     <legend>Rechercher le vol parfait</legend>
                     <div class="form-group">
@@ -15,17 +15,17 @@
                         <input class="form-control form-arrival" name="arrival" ng-model="arrival" type="text" placeholder="Arrival(s?)" ng-focus="arrivalSelect($event)" ng-change="findArrival()">
                         -->
                         
-                        <ui-select ng-model="search.departure" ng-click="departureSelect($event)" theme="bootstrap"  required >
-                            <ui-select-match placeholder="Départ">{{ search.departure.PlaceName }} ({{ search.departure.PlaceId }})</ui-select-match>
+                        <ui-select ng-model="flySearch.departure" ng-click="departureSelect($event)" theme="bootstrap"  required >
+                            <ui-select-match placeholder="Départ">{{ flySearch.departure.name }} ({{ flySearch.departure.code }})</ui-select-match>
                             <ui-select-choices repeat="departure in possibleDepartures" refresh="refreshPossibleDepartures($select.search)" refresh-delay="0">
-                                {{ departure.PlaceName }} ({{ departure.PlaceId }})
+                                {{ departure.name }} ({{ departure.code }})
                             </ui-select-choices>
                         </ui-select>
                         
-                        <ui-select multiple ng-model="search.arrivals" ng-click="arrivalSelect($event)" theme="bootstrap"  required >
-                            <ui-select-match placeholder="Liste des arrivées possibles">{{ $item.PlaceName }} ({{ $item.PlaceId}})</ui-select-match>
+                        <ui-select multiple ng-model="flySearch.arrivals" ng-click="arrivalSelect($event)" theme="bootstrap"  required >
+                            <ui-select-match placeholder="Liste des arrivées possibles">{{ $item.name }} ({{ $item.code}})</ui-select-match>
                             <ui-select-choices repeat="arrival in possibleArrivals" refresh="refreshPossibleArrivals($select.search)" refresh-delay="0">
-                                {{ arrival.PlaceName }} ({{ arrival.PlaceId }})
+                                {{ arrival.name }} ({{ arrival.code }})
                             </ui-select-choices>
                         </ui-select>
 
@@ -80,16 +80,16 @@
                 <fieldset>
                     <legend>Les départs favoris</legend>
                     <div ng-repeat="favoriteDeparture in favoriteDepartures">
-                        <input type="text" class="form-control" value="{{favoriteDeparture.PlaceName}}" readonly="readonly" style="background-color:white; border-radius:0px;" ng-focus="airportSelect('{{favoriteDeparture.PlaceName}}')"/>
+                        <input type="text" class="form-control" value="{{favoriteDeparture.name}}" readonly="readonly" style="background-color:white; border-radius:0px;" ng-focus="airportSelect('{{favoriteDeparture.name}}')"/>
                     </div>
                 </fieldset>
             </div>
             <div ng-show="arrivalSelected">
                 <fieldset>
                     <legend>Les destinations favorites</legend>
-                    <input type="text" class="form-control" value="Paris (PAR)" readonly="readonly" style="background-color:white; border-radius:0px;" ng-focus="airportSelect('Paris (PAR)')"/>
-                    <input type="text" class="form-control" value="Londres (LON)" readonly="readonly" style="background-color:white; border-radius:0px;" ng-focus="airportSelect('Londres (LON)')"/>
-                    <input type="text" class="form-control" value="New York (NYC)" readonly="readonly" style="background-color:white; border-radius:0px;" ng-focus="airportSelect('New York (NYC)')"/>
+                    <div ng-repeat="favoriteArrival in favoriteArrivals">
+                        <input type="text" class="form-control" value="{{favoriteArrival.name}}" readonly="readonly" style="background-color:white; border-radius:0px;" ng-focus="airportSelect('{{favoriteArrival.name}}')"/>
+                    </div>
                 </fieldset>
             </div>
             <div ng-show="peopleSelected">
@@ -97,7 +97,7 @@
                     <legend>Vous ne voyagez pas seul ?</legend>
                         <div class="form-group">
                           <label for="select" class="control-label">Nombre d'adultes</label>
-                            <select class="form-control" id="nbAdultes" ng-model="nbAdultes" ng-change="updatePeople()">
+                            <select class="form-control" ng-model="flySearch.nbAdults" ng-change="updatePeople()">
                                 <option>0</option>
                                 <option selected>1</option>
                                 <option>2</option>
@@ -113,7 +113,7 @@
                         </div>
                         <div class="form-group">
                           <label for="select" class="control-label">Nombre d'enfants</label>
-                            <select class="form-control" id="nbEnfants" ng-model="nbEnfants" ng-change="updatePeople()">
+                            <select class="form-control" ng-model="flySearch.nbChildren" ng-change="updatePeople()">
                               <option selected>0</option>
                               <option>1</option>
                               <option>2</option>
