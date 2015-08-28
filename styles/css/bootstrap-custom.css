@@ -91,7 +91,7 @@ time.icon em
   position: absolute;
   bottom: 0em;
   font-size: 1.5em;
-  color: #fd9f1b;
+  color: #2f2f2f;
 }
 
 time.icon span
@@ -104,3 +104,47 @@ time.icon span
   color: #2f2f2f;
 }
 
+
+.travel-box {
+    float: left;
+    width:500px;
+    position: relative;
+	border: 1px solid #ccc;
+	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1),
+				0 25px 50px 0 rgba(0, 0, 0, 0.05);
+    padding: 1px;
+    margin-bottom:15px;
+    padding-top:20px;
+    color:black;
+}
+
+
+.way-box {
+    padding-top:15px;
+    padding-bottom:15px;
+    color:black;
+}
+
+.travel-price {
+    padding-top:5px;
+    color:black;
+}
+
+ .no-border {
+     border:0px solid transparent; /* this was 1px earlier */
+}
+
+.source-button {
+    position:absolute;
+    top:0;
+    right:0;
+    border-bottom-left-radius: 100px;
+    
+}
+
+.travel-airlines {
+    position:absolute;
+    top:0px;
+    left:10px;
+    color:grey;
+}
