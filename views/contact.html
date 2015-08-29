@@ -8,33 +8,33 @@
     </div>
     <div class="col-lg-5">
         <div class="row">
-            <div class="travel-div">
+            <div class="travel-div" ng-repeat="travel in flySearch.subFlySearches[0].travels">
                 <a href="##">
                     <div class="travel-box" style="padding-top:20px;">  
-                        <div id="airline" class="travel-airlines h4">Air France</div>
+                        <div id="airline" class="travel-airlines h5">{{travel.airline}}</div>
                         <div id="price" class="col-xs-3 travel-price col-xs-push-9">
-                            <div class="row h3" style="text-align:center;">200 €</div>
+                            <div class="row h3" style="text-align:center;">{{travel.prices[1].price}} €</div>
                         </div>
                         <div id="aller" class="way-box col-xs-9 col-xs-pull-3">
                             <div class="row">
                                 <div class="col-xs-2" style="text-align:center; ">
                                     <time class="icon">
-                                      <em>Sept.</em>
-                                      <span>20</span>
+                                      <em>{{travel.outwardTakeOffDate | date:'MMM'}}</em>
+                                      <span>{{travel.outwardTakeOffDate | date:'dd'}}</span>
                                     </time>
                                 </div>    
                                 <div class="col-xs-3" style="text-align:center;">
-                                    <span class="h4" style="font-weight:bold;">07:05</span>
-                                    <span class="label label-success">CDG</span>
+                                    <span class="h4" style="font-weight:bold;">{{travel.outwardTakeOffDate | date:'HH:mm'}}</span>
+                                    <span class="label label-success">{{travel.outwardDeparture.code}}</span>
                                 </div>
                                 <div class="col-xs-4" style="text-align:center;">
-                                    <span class="h5">Direct</span>
+                                    <span class="h5">{{travel.outwardType}}</span>
                                     <div class="fly-arrow arrow-orange-direct" style="margin-top:-4px;"></div>
-                                    <div class="leg-stops-green" style="margin-top:-9px;">2h20</div>
+                                    <div class="leg-stops-green" style="margin-top:-9px;">{{travel.outwardDuration}}</div>
                                 </div>
                                 <div class="col-xs-3" style="text-align:center;">
-                                    <span class="h4" style="font-weight:bold;">09:25</span>
-                                    <span class="label label-success">CDG</span>
+                                    <span class="h4" style="font-weight:bold;">{{travel.outwardLandDate | date:'HH:mm'}}<h6 style="display:inline;" ng-hide="{{travel.outwardDayDiff}} == 0">(+1)</h6></span>
+                                    <span class="label label-success">{{travel.outwardArrival.code}}</span>
                                 </div>
                             </div>
                         </div>
@@ -42,111 +42,37 @@
                             <div class="row">
                                 <div class="col-xs-2" style="text-align:center; ">
                                     <time class="icon">
-                                      <em>Sept.</em>
-                                      <span>27</span>
+                                      <em>{{travel.inwardTakeOffDate | date:'MMM'}}</em>
+                                      <span>{{travel.inwardTakeOffDate | date:'dd'}}</span>
                                     </time>
                                 </div>    
                                 <div class="col-xs-3" style="text-align:center;">
-                                    <span class="h4" style="font-weight:bold;">19:55</span>
-                                    <span class="label label-success">BUD</span>
+                                    <span class="h4" style="font-weight:bold;">{{travel.inwardTakeOffDate | date:'HH:mm'}}</span>
+                                    <span class="label label-success">{{travel.inwardDeparture.code}}</span>
                                 </div>
                                 <div class="col-xs-4" style="text-align:center;">
-                                    <span class="h5">Direct</span>
+                                    <span class="h5">{{travel.inwardType}}</span>
                                     <div class="fly-arrow arrow-orange-direct" style="margin-top:-4px;"></div>
 
-                                    <div class="leg-stops-green" style="margin-top:-9px;">2h20</div>
+                                    <div class="leg-stops-green" style="margin-top:-9px;">{{travel.inwardDuration}}</div>
 
 
                                 </div>
                                 <div class="col-xs-3" style="text-align:center;">
-                                    <span class="h4" style="font-weight:bold;">22:15<h6 style="display:inline;">(+1)</h6></span>
-                                    <span class="label label-success">CDG</span>
+                                    <span class="h4" style="font-weight:bold;">{{travel.inwardLandDate | date:'HH:mm'}}<h6 style="display:inline;" ng-hide="{{travel.inwardDayDiff}} == 0">(+{{travel.inwardDayDiff}})</h6></span>
+                                    <span class="label label-success">{{travel.inwardArrival.code}}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </a>
                 <div class="btn-appear">
-                    <div class="btn btn-default travel-hide-btn no-border"><i class="glyphicon glyphicon-ban-circle"></i></div>
+                    <div class="btn btn-default travel-hide-btn no-border" data-toggle="tooltip" title="Masquer ce vol" style="display: block;"><i class="glyphicon glyphicon-ban-circle"></i></div>
                     <div class="travel-btns col-xs-3">
                         <a href="" class="btn btn-default btn-block no-border">C'est Parti !</a>
                         <div class="btn-group btn-group-justified">
-                            <p class="btn btn-default btn-lg no-border" ng-click="#"><i class="glyphicon glyphicon-star-empty"></i></p>
-                            <p class="btn btn-default btn-lg no-border" ng-click="#"><i class="glyphicon glyphicon-share"></i></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="travel-div">
-                <a href="##">
-                    <div class="travel-box">  
-                <div id="airline" class="travel-airlines h4">Air France</div>
-                <div id="price" class="col-xs-3 travel-price col-xs-push-9">
-                    <div class="row h3" style="text-align:center;">200 €</div>
-                </div>
-                <div id="aller" class="way-box col-xs-9 col-xs-pull-3">
-                    <div class="row">
-                        <div class="col-xs-2" style="text-align:center; ">
-                            <time class="icon">
-                              <em>Sept.</em>
-                              <span>20</span>
-                            </time>
-                        </div>    
-                        <div class="col-xs-3" style="text-align:center;">
-                            <span class="h4" style="font-weight:bold;">07:05</span>
-                            <span class="label label-success">CDG</span>
-                        </div>
-                        <div class="col-xs-4" style="text-align:center;">
-                            <span class="h5">Direct</span>
-                            <div class="fly-arrow arrow-orange-direct" style="margin-top:-4px;"></div>
-
-                            <div class="leg-stops-green" style="margin-top:-9px;">2h20</div>
-
-
-                        </div>
-                        <div class="col-xs-3" style="text-align:center;">
-                        <span class="h4" style="font-weight:bold;">09:25</span>
-                        <span class="label label-success">CDG</span>
-                    </div>
-                    </div>
-                </div>
-                <div id="retour" class="way-box col-xs-9">
-                    <div class="row">
-                        <div class="col-xs-2" style="text-align:center; ">
-                            <time class="icon">
-                              <em>Sept.</em>
-                              <span>27</span>
-                            </time>
-                        </div>    
-                        <div class="col-xs-3" style="text-align:center;">
-                            <span class="h4" style="font-weight:bold;">19:55</span>
-                            <span class="label label-success">BUD</span>
-                        </div>
-                        <div class="col-xs-4" style="text-align:center;">
-                            <span class="h5">Direct</span>
-                            <div class="fly-arrow arrow-orange-direct" style="margin-top:-4px;"></div>
-
-                            <div class="leg-stops-green" style="margin-top:-9px;">2h20</div>
-
-
-                        </div>
-                        <div class="col-xs-3" style="text-align:center;">
-                            <span class="h4" style="font-weight:bold;">22:15<h6 style="display:inline;">(+1)</h6></span>
-                            <span class="label label-success">CDG</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                </a>    
-                <div class="btn btn-default travel-hide-btn no-border" data-toggle="tooltip" title="Masquer ce vol" style="display: block;"><i class="glyphicon glyphicon-ban-circle"></i></div>
-                <div class="travel-btns col-xs-3">
-                    <div class="row"><a href="" class="btn btn-default btn-block no-border">Détails</a></div>
-                    <div class="row">
-                        <div class="btn-group btn-group-justified">
-                            <p class="btn btn-default btn-lg no-border" ng-click="#"><i class="glyphicon glyphicon-star-empty"></i></p>
-                            <p class="btn btn-default btn-lg no-border" ng-click="#"><i class="glyphicon glyphicon-share"></i></p>
+                            <p class="btn btn-default btn-lg no-border"><i class="glyphicon glyphicon-star-empty"></i></p>
+                            <p class="btn btn-default btn-lg no-border"><i class="glyphicon glyphicon-share"></i></p>
                         </div>
                     </div>
                 </div>
@@ -164,8 +90,8 @@
                 <div class="col-xs-6">
                     <a href="" class="btn btn-default btn-lg btn-block no-border">C'est parti !</a>
                     <div class="btn-group btn-group-justified">
-                        <p class="btn btn-default btn-lg no-border" ng-click="#"><i class="glyphicon glyphicon-star-empty"></i></p>
-                        <p class="btn btn-default btn-lg no-border" ng-click="#"><i class="glyphicon glyphicon-share"></i></p>
+                        <p class="btn btn-default btn-lg no-border"><i class="glyphicon glyphicon-star-empty"></i></p>
+                        <p class="btn btn-default btn-lg no-border"><i class="glyphicon glyphicon-share"></i></p>
                     </div>
                 </div>
             </div>
