@@ -107,14 +107,13 @@ time.icon span
 
 .travel-box {
     float: left;
-    width:500px;
+    width:100%;
     position: relative;
 	border: 1px solid #ccc;
 	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1),
 				0 25px 50px 0 rgba(0, 0, 0, 0.05);
     padding: 1px;
     margin-bottom:15px;
-    padding-top:20px;
     color:black;
 }
 
@@ -134,10 +133,10 @@ time.icon span
      border:0px solid transparent; /* this was 1px earlier */
 }
 
-.source-button {
+.travel-hide-btn {
     position:absolute;
-    top:0;
-    right:0;
+    top:1px;
+    right:1px;
     border-bottom-left-radius: 100px;
     
 }
@@ -147,4 +146,16 @@ time.icon span
     top:0px;
     left:10px;
     color:grey;
+}
+
+.travel-div {
+    float: left;
+    width:500px;
+    position: relative;
+}
+
+.travel-btns {
+    position:absolute;
+    bottom:30px;
+    right:1px;
 }
