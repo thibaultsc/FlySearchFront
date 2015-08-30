@@ -128,6 +128,22 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             $scope.increaseBox[$scope.selectedTravel.id] = false;
         }
         
+       $scope.orderByFunction = function(input, attribute) {
+            if (!angular.isObject(input)) return input;
+
+            var array = [];
+            for(var objectKey in input) {
+                array.push(input[objectKey]);
+            }
+
+            array.sort(function(a, b){
+                a = parseInt(a[attribute]);
+                b = parseInt(b[attribute]);
+                return a - b;
+            });
+            return array;
+        }
+        
         
         $scope.updateTravelData = function () {
             angular.forEach($scope.travelData, function(travel) {
@@ -150,7 +166,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 //Global duration & type of flight
                 travel.outwardType = $scope.TypeFunction(outwardFlights);
                 travel.outwardTypeCss = outwardFlights.length;
-                travel.outwardDuration = Math.floor(moment.duration(moment(travel.outwardLandDate).diff(travel.outwardTakeOffDate)).asHours()) + "h" + moment.utc(moment(travel.outwardLandDate).diff(travel.outwardTakeOffDate)).format('mm');
+                travel.outwardDuration = Math.floor(moment.duration(moment(travel.outwardLandDate).diff(travel.outwardTakeOffDate)).asHours()) + "h" + moment.utc(moment(travel.outwardLandDate).diff(travel.outwardTakeOffDate)).format('mm')+"m";
                 
                 // INWARD FLIGHT
                 // Info about departure
@@ -163,7 +179,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 //Global duration & type of flight
                 travel.inwardType = $scope.TypeFunction(inwardFlights);
                 travel.inwardTypeCss = inwardFlights.length;
-                travel.inwardDuration = Math.floor(moment.duration(moment(travel.inwardLandDate).diff(travel.inwardTakeOffDate)).asHours()) + "h" + moment.utc(moment(travel.inwardLandDate).diff(travel.inwardTakeOffDate)).format('mm');
+                travel.inwardDuration = Math.floor(moment.duration(moment(travel.inwardLandDate).diff(travel.inwardTakeOffDate)).asHours()) + "h" + moment.utc(moment(travel.inwardLandDate).diff(travel.inwardTakeOffDate)).format('mm')+"m";
                 
                 //PURCHASE INFO
                 travel.airline = $scope.getAirlines(travel);
@@ -173,6 +189,26 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 //$scope.showBtnsBool[travel.id] = false;
                 $scope.increaseBox[travel.id] = false;
                 travel.showBtnsBool = false;
+                
+                var oldFlight = "";
+                var flightsData1 = $scope.orderByFunction(travel.flights, 'indice');
+                travel.flights = $scope.orderByFunction(flightsData1, 'wayType');
+                console.log(travel.flights);
+                
+                angular.forEach(travel.flights, function(flight) {
+                    
+                    flight.duration = Math.floor(moment.duration(moment(flight.landDate).diff(flight.takeOffDate)).asHours()) + "h" + moment.utc(moment(flight.landDate).diff(flight.takeOffDate)).format('mm')+"m";
+                    //console.log(flight.duration);
+                    flight.corespondanceDuration = "";
+                    
+                    if (oldFlight != ""){
+                        var correspondanceStart = oldFlight.landDate;
+                        var correspondanceEnd = flight.takeOffDate;
+                        flight.correspondanceDuration = Math.floor(moment.duration(moment(correspondanceEnd).diff(correspondanceStart)).asHours()) + "h" + moment.utc(moment(correspondanceEnd).diff(correspondanceStart)).format('mm')+"m"; 
+                    }
+                    oldFlight = flight;
+                    
+                })
                 
             })
 

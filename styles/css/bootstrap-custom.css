@@ -192,6 +192,23 @@ time.icon span
 .btn-show-false {
     color:white;
 }
-.table td {
+.table-center td {
    text-align: center;   
+}
+.table-center th {
+   text-align: center;   
+}
+
+.table-no-margin {
+    margin-bottom:0px;
+}
+
+
+
+.th-no-bold {
+    font-weight: 400;
+}
+
+.th-align-right {
+    text-align: right;
 }
