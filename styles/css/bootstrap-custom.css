@@ -26,14 +26,14 @@
     width: 107px;
     background-image:url(../../views/arrows/Doc1_files/image001.png);
 }
-.arrow-blue-direct {
+.arrow-1 {
     background-position: 0% 0%;
 }
-.arrow-blue-1 {
-    background-position: 0% 12.7%;
+.arrow-2 {
+    background-position: 0% 56.50%;
 }
-.arrow-blue-2 {
-    background-position: 0% 25.4%;
+.arrow-3 {
+    background-position: 0% 113%;
 }
 .arrow-green-direct {
     background-position: 0% 38.1%;
@@ -107,20 +107,31 @@ time.icon span
 
 .travel-box {
     float: left;
-    width:100%;
+
     position: relative;
 	border: 1px solid #ccc;
-	box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1),
-				0 25px 50px 0 rgba(0, 0, 0, 0.05);
+
     padding: 1px;
-    margin-bottom:15px;
+    margin-bottom:30px;
     color:black;
+    background-color:white;
+}
+.travel-box-true{
+    width:calc(100% + 16px);
+    border-right: 0px;
+    padding-right: 18px;    
+}
+.travel-box-false{
+    width:100%;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1),
+				0 25px 50px 0 rgba(0, 0, 0, 0.05);
 }
 
 
+
 .way-box {
-    padding-top:15px;
-    padding-bottom:15px;
+    padding-top:12px;
+    padding-bottom:6px;
     color:black;
 }
 
@@ -150,12 +161,37 @@ time.icon span
 
 .travel-div {
     float: left;
-    width:500px;
+    width:100%;
     position: relative;
 }
 
 .travel-btns {
     position:absolute;
-    bottom:30px;
+    bottom:40px;
     right:1px;
+}
+
+.label-departure {
+    background-color:white; 
+    color:grey; 
+    border: 1px solid #ccc;
+}
+.label-1 {
+    background-color:seagreen; 
+}
+.label-2 {
+    background-color:dodgerblue; 
+}
+.label-2 {
+    background-color:darkorange; 
+}
+
+.btn-show-true {
+    color:black;
+}
+.btn-show-false {
+    color:white;
+}
+.table td {
+   text-align: center;   
 }

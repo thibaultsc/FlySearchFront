@@ -9,11 +9,31 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         
         
         $scope.flySearch = {};
+        $scope.showDetailsBool = false;
+        $scope.selectedTravel ="";
+        $scope.travelData =[];
+        //$scope.showBtnsBool = [];
+        $scope.increaseBox = [];
+        $scope.showDetailsOffset = 0;
+        
         
         $scope.refreshFlySearchData = function () {
             apiAirports.get().then(function(flySearchData) {
+                $scope.travelData =[];
                 $scope.flySearch = flySearchData;
-                $scope.travelData = $scope.flySearch.subFlySearches[0].travels;
+                var i =0;
+                angular.forEach($scope.flySearch.subFlySearches, function(subFlySearch) {
+                    if (subFlySearch.travels.length !==0 ) {
+                        i=i+1;
+                        angular.forEach(subFlySearch.travels, function(travel) {
+                            if ( travel.flights.length !== 0 ) {
+                                travel.subFlySearchParent = (i);
+                                
+                                $scope.travelData.push(travel);
+                            }
+                        })
+                    }
+                })
                 $scope.updateTravelData();
             });
         };
@@ -54,9 +74,8 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         $scope.getPrice = function (travel) {
             var minPrice = 1000000;
             angular.forEach(travel.prices, function(price) {
-                
-                if (price < minPrice) {
-                    minPrice = price;
+                if (price.price < minPrice) {
+                    minPrice = price.price;
                 }
             })
             return minPrice;
@@ -74,17 +93,52 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             }
         }
         
+        $scope.showDetailsFunction = function (travel,$event) {
+            if (travel.id !== $scope.selectedTravel.id) {
+                //Decrease the size of the previous selected travel box
+                $scope.increaseBox[$scope.selectedTravel.id] = false;
+            }
+            //Show the details box
+            $scope.showDetailsBool = true;
+            //console.log($event);
+            if ($event !== undefined) {
+                //Get back the vertical offset of the selected travel to align the details travel box
+                $scope.showDetailsOffset = angular.element($event.currentTarget).prop('offsetTop');
+            }
+            //increase the size of the travel box
+            $scope.increaseBox[travel.id] = true;
+            //update the new selectedTravel value
+            $scope.selectedTravel = travel;
+            //Show the buttons on the selected travels.
+            $scope.showBtnsFunction(travel);
+        }
+        $scope.showBtnsFunction = function (travel) {
+            //console.log(travel['@id']);
+            travel.showBtnsBool = true;
+            //id = travel['@id'].substring(travel['@id'].lastIndexOf("/")+1,  travel['@id'].length);
+            //console.log(travel.id);
+            //$scope.showBtnsBool[travel.id] = true;
+        }
+        $scope.hideBtnsFunction = function (travel) {
+            //$scope.showBtnsBool[travel.id] = false;
+            travel.showBtnsBool = false;
+        }
+        $scope.hideDetailsFunction = function () {
+            $scope.showDetailsBool = false;
+            $scope.increaseBox[$scope.selectedTravel.id] = false;
+        }
+        
         
         $scope.updateTravelData = function () {
-            angular.forEach($scope.flySearch.subFlySearches[0].travels, function(travel) {
-                
+            angular.forEach($scope.travelData, function(travel) {
+
                 var outwardFlights = $scope.filterFlight(travel.flights,1,0);
                 var firstOutward = $scope.filterFlight(outwardFlights,0,1);
                 var lastOutward = $scope.filterFlight(outwardFlights,0,outwardFlights.length);                                 
                 var inwardFlights = $scope.filterFlight(travel.flights,2,0);
                 var firstInward = $scope.filterFlight(inwardFlights,0,1);
                 var lastInward = $scope.filterFlight(inwardFlights,0,inwardFlights.length);
-                
+                                
                 // OUTWARD FLIGHT
                 // Info about departure
                 travel.outwardTakeOffDate = firstOutward[0].takeOffDate;
@@ -95,6 +149,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 travel.outwardArrival = lastOutward[0].arrival;
                 //Global duration & type of flight
                 travel.outwardType = $scope.TypeFunction(outwardFlights);
+                travel.outwardTypeCss = outwardFlights.length;
                 travel.outwardDuration = Math.floor(moment.duration(moment(travel.outwardLandDate).diff(travel.outwardTakeOffDate)).asHours()) + "h" + moment.utc(moment(travel.outwardLandDate).diff(travel.outwardTakeOffDate)).format('mm');
                 
                 // INWARD FLIGHT
@@ -107,11 +162,17 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 travel.inwardArrival = lastInward[0].arrival;
                 //Global duration & type of flight
                 travel.inwardType = $scope.TypeFunction(inwardFlights);
+                travel.inwardTypeCss = inwardFlights.length;
                 travel.inwardDuration = Math.floor(moment.duration(moment(travel.inwardLandDate).diff(travel.inwardTakeOffDate)).asHours()) + "h" + moment.utc(moment(travel.inwardLandDate).diff(travel.inwardTakeOffDate)).format('mm');
                 
                 //PURCHASE INFO
                 travel.airline = $scope.getAirlines(travel);
-                travel.price = $scope.getPrice(travel);
+                travel.minprice = $scope.getPrice(travel);
+                
+                travel.id = travel['@id'].substring(travel['@id'].lastIndexOf("/")+1,  travel['@id'].length);
+                //$scope.showBtnsBool[travel.id] = false;
+                $scope.increaseBox[travel.id] = false;
+                travel.showBtnsBool = false;
                 
             })
 
