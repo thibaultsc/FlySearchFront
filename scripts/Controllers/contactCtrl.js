@@ -12,7 +12,6 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         $scope.showDetailsBool = false;
         $scope.selectedTravel ="";
         $scope.travelData =[];
-        //$scope.showBtnsBool = [];
         $scope.increaseBox = [];
         $scope.showDetailsOffset = 0;
         
@@ -21,8 +20,38 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             apiAirports.get().then(function(flySearchData) {
                 $scope.travelData =[];
                 $scope.flySearch = flySearchData;
-                var i =0;
+                $scope.flySearch.placeTable = [];
+                $scope.flySearch.dateTable = [];
+                $scope.flySearch.coordinateTable = [[]];
+                
+                var i =0;  
+                //console.log($scope.flySearch.placeTable);
                 angular.forEach($scope.flySearch.subFlySearches, function(subFlySearch) {
+                    //Definition of a table that will give the coordinates of the values in the summary table (html)
+                    subFlySearch.coord = [];
+                    //Concatenate Places together and dates together
+                    subFlySearch.placeTable = subFlySearch.departure.code + subFlySearch.arrival.code;
+                    subFlySearch.dateTable = subFlySearch.departureDate + subFlySearch.arrivalDate;
+                    
+                    //Find if the concatenatePlace were already used
+                    if ($scope.flySearch.placeTable.indexOf(subFlySearch.placeTable) == -1) {
+                        //console.log($scope.flySearch.placeTable.indexOf(subFlySearch.placeTable));
+                        $scope.flySearch.placeTable.push(subFlySearch.placeTable);
+                        //console.log($scope.flySearch.placeTable);
+                    }
+                    //Find if the concatenateDate were already used
+                    if ($scope.flySearch.dateTable.indexOf(subFlySearch.dateTable) == -1) {
+                        //console.log($scope.flySearch.placeTable.indexOf(subFlySearch.placeTable));
+                        $scope.flySearch.dateTable.push(subFlySearch.dateTable);
+                        //console.log($scope.flySearch.dateTable);
+                    }
+                    //Give back the coordinates
+                    subFlySearch.coord[0] = $scope.flySearch.placeTable.indexOf(subFlySearch.placeTable);
+                    subFlySearch.coord[0] = $scope.flySearch.dateTable.indexOf(subFlySearch.dateTable);
+                    //$scope.flySearch.coordinateTable[subFlySearch.coord[0]][subFlySearch.coord[1]] = subFlySearch['@id'];
+                    //console.log(subFlySearch.coord);
+                    //console.log($scope.flySearch.coordinateTable);
+                    
                     if (subFlySearch.travels.length !==0 ) {
                         i=i+1;
                         angular.forEach(subFlySearch.travels, function(travel) {
@@ -37,6 +66,29 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 $scope.updateTravelData();
             });
         };
+        $scope.getNumber = function(num) {
+            var Table =[];  
+            for (var i=0;i<num;i++) {
+            Table[i]=i;
+            }
+            return Table;
+        }
+        $scope.getDates = function (i){
+            var a = 0;
+            angular.forEach($scope.flySearch.subFlySearches, function(subFlySearch) {
+                if (subFlySearch == undefined) {
+                return 'error';
+                }
+                if (subFlySearch.coord[0] == i) {
+                    console.log(subFlySearch.departureDate);
+                    a = subFlySearch.departureDate ;
+                    //return '0';
+                }
+                
+                return a;
+            })
+        }
+        
         
         $scope.filterFlight = function (flights, wayType,indice) {
             var filteredFlights = [];
@@ -193,7 +245,6 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 var oldFlight = "";
                 var flightsData1 = $scope.orderByFunction(travel.flights, 'indice');
                 travel.flights = $scope.orderByFunction(flightsData1, 'wayType');
-                console.log(travel.flights);
                 
                 angular.forEach(travel.flights, function(flight) {
                     

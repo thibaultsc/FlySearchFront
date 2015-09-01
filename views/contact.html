@@ -103,20 +103,14 @@
                       <thead>
                         <tr>
                           <th>Trips</th>
-                          <th><span class="label label-success label-1">New York - NYC</span></th>
-                          <th><span class="label label-success label-2">Londres - LON</span></th>
+                          <th ng-repeat="subFlySearch in flySearch.subFlySearches | filter : subFlySearch.coord[0] ==0 "><span class="label label-success label-{{$index}}" >{{subFlySearch.arrival.code}} - {{subFlySearch.arrival.name}}</span></th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody  ng-repeat="i in getNumber(flySearch.dateTable.length)">
                         <tr>
-                          <th scope="row">20 Dec<br/>27 Dec</th>
-                          <td><h3 style="margin:0px;">55 €</h3><h5 style="margin:0px;">2h20m</h5></td>
-                          <td><h3 style="margin:0px;">38 €</h3><h5 style="margin:0px;">2h20m</h5></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">20 Dec<br/>27 Dec</th>
-                          <td><h3 style="margin:0px;">55 €</h3><h5 style="margin:0px;">2h20m</h5></td>
-                          <td><h3 style="margin:0px;">38 €</h3><h5 style="margin:0px;">2h20m</h5></td>
+                            <th scope="row">{{getDates(i)}}a</th>
+                              <td ng-repeat="j in getNumber(flySearch.placeTable.length) track by $index"><h3 style="margin:0px;">{{flySearch.getPrice(i,j)}}n</h3><h5 style="margin:0px;">{{flySearch.getDuration(i,j)}}</h5></td>
+                            </div>
                         </tr>
                       </tbody>
                     </table>
