@@ -3,9 +3,22 @@
 
 <div class="row">
     <div class="col-lg-3">
-        <div class="travel-box travel-box-false" ng-hide="true">
-            <div class="btn btn-default" ng-click="refreshFlySearchData()"></div>
+        <div class="travel-box travel-box-false" ng-hide="false">
+            <div class="btn btn-default" ng-click="refreshFlySearchData()">Refresh</div>
+            <p> Filtres</p>
+            <div class="checkbox">
+                <label style="display:block;">
+                    <input type="checkbox" ng-model="flySearch.directCheckBox" ng-change="filterFlySearchTravels()"> Direct
+                </label>
+                <label style="display:block;">
+                    <input type="checkbox" ng-model="flySearch.escaleCheckBox" ng-change="filterFlySearchTravels()"> 1 Escale
+                </label> 
+                <label style="display:block;">
+                    <input type="checkbox" ng-model="flySearch.escalesCheckBox" ng-change="filterFlySearchTravels()"> 2 Escales
+                </label> 
+            </div>
         </div>
+        
     </div>
     <div ng-mouseleave="hideDetailsFunction()">
     <div class="col-lg-4 col-lg-push-5"> 
@@ -13,7 +26,7 @@
             <div class="row">
 
                 <div class="col-xs-12">
-                    <a href="" class="btn btn-default btn-lg btn-block">Acheter à {{selectedTravel.minprice}} €</a>
+                    <a href="" class="btn btn-default btn-lg btn-block">Acheter à {{selectedTravel.minPrice}} €</a>
                     <div class="btn-group btn-group-justified">
                         <p class="btn btn-default btn-lg no-border"><i class="glyphicon glyphicon-star-empty"></i></p>
                         <p class="btn btn-default btn-lg no-border"><i class="glyphicon glyphicon-share"></i></p>
@@ -26,7 +39,7 @@
                 </div>    
             
 
-        <div class="row well h4" style="padding:5px; text-align:center; margin:5px; font-weight:bold;">Aller<span class="h5"> - {{selectedTravel.outwardDuration}}</span></div>
+        <div class="row well h4" style="padding:5px; text-align:center; margin:5px; font-weight:bold;">Aller<span class="h5"> - {{selectedTravel.outwardDurationPrint}}</span></div>
             <div  class="table-responsive" ng-repeat="flight in selectedTravel.flights  | filter: { wayType: 1 } | orderBy: 'indice'" >
             <table class="table table-no-margin">
               <thead ng-hide="flight.indice==1">
@@ -60,7 +73,7 @@
             </table>
                 
             </div>
-            <div class="row well h4" style="padding:5px; text-align:center; margin:5px; font-weight:bold;">Retour<span class="h5"> - {{selectedTravel.inwardDuration}}</span></div>
+            <div class="row well h4" style="padding:5px; text-align:center; margin:5px; font-weight:bold;">Retour<span class="h5"> - {{selectedTravel.inwardDurationPrint}}</span></div>
             <div class="table-responsive" ng-repeat="flight in selectedTravel.flights  | filter: { wayType: 2 } | orderBy: 'indice'" >
             <table class="table table-no-margin">
               <thead ng-hide="flight.indice==1">
@@ -103,13 +116,13 @@
                       <thead>
                         <tr>
                           <th>Trips</th>
-                          <th ng-repeat="subFlySearch in flySearch.subFlySearches | filter : subFlySearch.coord[0] ==0 "><span class="label label-success label-{{$index}}" >{{subFlySearch.arrival.code}} - {{subFlySearch.arrival.name}}</span></th>
+                          <th ng-repeat="j in getNumber(flySearch.placeTable.length)"><span class="label label-success label-{{$index+1}}" >{{getFlySearchPlaces(j)}}</span></th>
                         </tr>
                       </thead>
                       <tbody  ng-repeat="i in getNumber(flySearch.dateTable.length)">
                         <tr>
-                            <th scope="row">{{getDates(i)}}a</th>
-                              <td ng-repeat="j in getNumber(flySearch.placeTable.length) track by $index"><h3 style="margin:0px;">{{flySearch.getPrice(i,j)}}n</h3><h5 style="margin:0px;">{{flySearch.getDuration(i,j)}}</h5></td>
+                            <th scope="row">{{getFlySearchDates(i)[0]}}<br/>{{getFlySearchDates(i)[1]}}</th>
+                              <td ng-repeat="j in getNumber(flySearch.placeTable.length) track by $index"><h3 style="margin:0px;">{{getFlySearchMinPrices(i,j)[0]}}</h3><h5 style="margin:0px;">{{getFlySearchMinPrices(i,j)[1]}}</h5></td>
                             </div>
                         </tr>
                       </tbody>
@@ -118,12 +131,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="travel-div" ng-repeat="travel in travelData | orderBy: 'minprice'"  ng-mouseover="showDetailsFunction(travel,$event)" ng-mouseleave="hideBtnsFunction(travel)">
+            <div class="travel-div" ng-repeat="travel in travelData | filter: { showTravel: true } | orderBy: 'minPrice'"  ng-mouseover="showDetailsFunction(travel,$event)" ng-mouseleave="hideBtnsFunction(travel)">
                 <a ng-click="showDetailsFunction(travel)" >
                     <div id="{{travel.id}}" class="travel-box travel-box-{{increaseBox[travel.id]}}" style="padding-top:20px;" ng-mouseover="showDetailsFunction(travel)">  
                         <div id="airline" class="travel-airlines h5">{{travel.airline}}</div>
                         <div id="price" class="col-xs-3 travel-price col-xs-push-9">
-                            <div class="row h3" style="text-align:center; margin-top:8px;">{{travel.minprice}} €</div>
+                            <div class="row h3" style="text-align:center; margin-top:8px;">{{travel.minPrice}} €</div>
                         </div>
                         <div id="aller" class="way-box col-xs-9 col-xs-pull-3">
                             <div class="row">
@@ -140,7 +153,7 @@
                                 <div class="col-xs-4" style="text-align:center;">
                                     <span class="h5" style="margin-top:0px;">{{travel.outwardType}}</span>
                                     <div class="fly-arrow arrow-{{travel.outwardTypeCss}}" style="margin-top:0px;"></div>
-                                    <div class="leg-stops-green" style="margin-top:-4px;">{{travel.outwardDuration}}</div>
+                                    <div class="leg-stops-green" style="margin-top:-4px;">{{travel.outwardDurationPrint}}</div>
                                 </div>
                                 <div class="col-xs-3" style="text-align:center;">
                                     <span class="h4" style="font-weight:bold;">{{travel.outwardLandDate | date:'HH:mm'}}<h6 style="display:inline;" ng-hide="{{travel.outwardDayDiff}} == 0">(+1)</h6></span>
@@ -164,7 +177,7 @@
                                     <span class="h5" style="margin-top:0px;">{{travel.inwardType}}</span>
                                     <div class="fly-arrow arrow-{{travel.inwardTypeCss}}" style="margin-top:0px;"></div>
 
-                                    <div class="leg-stops-green" style="margin-top:-4px;">{{travel.inwardDuration}}</div>
+                                    <div class="leg-stops-green" style="margin-top:-4px;">{{travel.inwardDurationPrint}}</div>
 
 
                                 </div>

@@ -4,10 +4,10 @@
 flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
     function($scope,$http,Restangular, $routeParams){
 
-        var apiAirports = Restangular.one('api/fly_searches', 5); //Restangular.all('api/fly_searches/5');
-        //var $scope.travelData = [];
+        //récupération des résultats de recherche
+        var apiFlySearch = Restangular.one('api/fly_searches', 5); //Restangular.all('api/fly_searches/5');
         
-        
+        //initialisation des variables
         $scope.flySearch = {};
         $scope.showDetailsBool = false;
         $scope.selectedTravel ="";
@@ -15,20 +15,23 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         $scope.increaseBox = [];
         $scope.showDetailsOffset = 0;
         
-        
         $scope.refreshFlySearchData = function () {
-            apiAirports.get().then(function(flySearchData) {
+            apiFlySearch.get().then(function(flySearchData) {
                 $scope.travelData =[];
                 $scope.flySearch = flySearchData;
                 $scope.flySearch.placeTable = [];
                 $scope.flySearch.dateTable = [];
-                $scope.flySearch.coordinateTable = [[]];
+                $scope.flySearch.directCheckBox = true;
+                $scope.flySearch.escaleCheckBox = false;
+                $scope.flySearch.escalesCheckBox = false;
                 
                 var i =0;  
                 //console.log($scope.flySearch.placeTable);
                 angular.forEach($scope.flySearch.subFlySearches, function(subFlySearch) {
                     //Definition of a table that will give the coordinates of the values in the summary table (html)
                     subFlySearch.coord = [];
+                    subFlySearch.minPrice =1000000;
+                    subFlySearch.durationMinPrice = "";
                     //Concatenate Places together and dates together
                     subFlySearch.placeTable = subFlySearch.departure.code + subFlySearch.arrival.code;
                     subFlySearch.dateTable = subFlySearch.departureDate + subFlySearch.arrivalDate;
@@ -47,8 +50,9 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                     }
                     //Give back the coordinates
                     subFlySearch.coord[0] = $scope.flySearch.placeTable.indexOf(subFlySearch.placeTable);
-                    subFlySearch.coord[0] = $scope.flySearch.dateTable.indexOf(subFlySearch.dateTable);
+                    subFlySearch.coord[1] = $scope.flySearch.dateTable.indexOf(subFlySearch.dateTable);
                     //$scope.flySearch.coordinateTable[subFlySearch.coord[0]][subFlySearch.coord[1]] = subFlySearch['@id'];
+                    //console.log('suite');
                     //console.log(subFlySearch.coord);
                     //console.log($scope.flySearch.coordinateTable);
                     
@@ -56,16 +60,117 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                         i=i+1;
                         angular.forEach(subFlySearch.travels, function(travel) {
                             if ( travel.flights.length !== 0 ) {
+
+                                var outwardFlights = $scope.filterFlight(travel.flights,1,0);
+                                var firstOutward = $scope.filterFlight(outwardFlights,0,1);
+                                var lastOutward = $scope.filterFlight(outwardFlights,0,outwardFlights.length);                                 
+                                var inwardFlights = $scope.filterFlight(travel.flights,2,0);
+                                var firstInward = $scope.filterFlight(inwardFlights,0,1);
+                                var lastInward = $scope.filterFlight(inwardFlights,0,inwardFlights.length);
+                                
+                                //Rajout des attributs métiers
                                 travel.subFlySearchParent = (i);
                                 
-                                $scope.travelData.push(travel);
+                                // OUTWARD FLIGHT
+                                // Info about departure
+                                travel.outwardTakeOffDate = firstOutward[0].takeOffDate;
+                                travel.outwardDeparture = firstOutward[0].departure;
+                                //Info about arrival
+                                travel.outwardLandDate = lastOutward[0].landDate;
+                                travel.outwardDayDiff = moment(travel.outwardLandDate).date() - moment(travel.outwardTakeOffDate).date();
+                                travel.outwardArrival = lastOutward[0].arrival;
+                                //Global duration & type of flight
+                                travel.outwardType = $scope.TypeFunction(outwardFlights);
+                                travel.outwardTypeValue = outwardFlights.length;
+                                travel.outwardDuration = moment(travel.outwardLandDate).diff(travel.outwardTakeOffDate);
+                                
+                                // INWARD FLIGHT
+                                // Info about departure
+                                travel.inwardTakeOffDate = firstInward[0].takeOffDate;
+                                travel.inwardDeparture = firstInward[0].departure;
+                                //Info about arrival
+                                travel.inwardLandDate = lastInward[0].landDate;
+                                travel.inwardDayDiff = moment(travel.inwardLandDate).date() - moment(travel.inwardTakeOffDate).date();
+                                travel.inwardArrival = lastInward[0].arrival;
+                                //Global duration & type of flight
+                                travel.inwardType = $scope.TypeFunction(inwardFlights);
+                                travel.inwardTypeValue = inwardFlights.length;
+                                travel.inwardDuration = moment(travel.inwardLandDate).diff(travel.inwardTakeOffDate);
+                                
+                                //PURCHASE INFO
+                                travel.airline = $scope.getTravelAirlines(travel);
+                                travel.minPrice = $scope.getTravelMinPrice(travel);
+                                
+                                //Mise à jour du plus faible prix sur sous type de recherche
+                                if (travel.minPrice < subFlySearch.minPrice) {
+                                    subFlySearch.minPrice = travel.minPrice;
+                                    subFlySearch.durationMinPrice = Math.max (travel.inwardDuration, travel.outwardDuration);
+                                }
+                                travel.id = travel['@id'].substring(travel['@id'].lastIndexOf("/")+1,  travel['@id'].length);
+                                
+                                //format arrows
+                                travel.outwardTypeCss = outwardFlights.length;
+                                travel.inwardTypeCss = inwardFlights.length;
+                                
+                                // Calcul des détails des voyages (Durée, temps de correspondance)
+                                var oldFlight = "";
+                                var flightsData1 = $scope.orderByFunction(travel.flights, 'indice');
+                                travel.flights = $scope.orderByFunction(flightsData1, 'wayType');
+
+                                angular.forEach(travel.flights, function(flight) {
+
+                                    flight.duration = Math.floor(moment.duration(moment(flight.landDate).diff(flight.takeOffDate)).asHours()) + "h" + moment.utc(moment(flight.landDate).diff(flight.takeOffDate)).format('mm')+"m";
+                                    //console.log(flight.duration);
+                                    flight.corespondanceDuration = "";
+
+                                    if (oldFlight != ""){
+                                        var correspondanceStart = oldFlight.landDate;
+                                        var correspondanceEnd = flight.takeOffDate;
+                                        flight.correspondanceDuration = Math.floor(moment.duration(moment(correspondanceEnd).diff(correspondanceStart)).asHours()) + "h" + moment.utc(moment(correspondanceEnd).diff(correspondanceStart)).format('mm')+"m"; 
+                                    }
+                                    oldFlight = flight;
+
+                                })
+
+                                //$scope.travelData.push(travel);
                             }
                         })
                     }
                 })
-                $scope.updateTravelData();
+                 $scope.filterFlySearchTravels();
+                //$scope.updateTravelData();
             });
         };
+        
+        $scope.filterFlySearchTravels = function () {
+            $scope.travelData =[];
+            angular.forEach($scope.flySearch.subFlySearches,function(subFlySearch) {
+                angular.forEach(subFlySearch.travels,function(travel) {
+                    
+                    //Filtre sur vol Direct / 1 Escale / 2 Escales
+                    if (travel.inwardTypeValue == 1 && travel.outwardTypeValue == 1) {
+                        travel.showTravel = $scope.flySearch.directCheckBox;
+                        //console.log (travel.inwardTypeValue);
+                    }
+                    else {
+                        if (travel.inwardTypeValue <3 && travel.outwardTypeValue <3) {
+                            travel.showTravel = $scope.flySearch.escaleCheckBox;
+                            //console.log ($scope.flySearch.directCheckBox);
+                        }
+                        else {
+                            travel.showTravel = $scope.flySearch.escalesCheckBox;
+                            //console.log ($scope.flySearch.directCheckBox);
+                        }
+                    
+                    }
+                    //console.log (travel.showTravel);
+                    $scope.travelData.push(travel);
+                    
+                })
+            })
+            $scope.updateTravelData();
+        }
+        
         $scope.getNumber = function(num) {
             var Table =[];  
             for (var i=0;i<num;i++) {
@@ -73,22 +178,61 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             }
             return Table;
         }
-        $scope.getDates = function (i){
-            var a = 0;
+        
+        $scope.getFlySearchDates = function (i){
+            var a = 'gh';
+            var b="";
+            angular.forEach($scope.flySearch.subFlySearches, function(subFlySearch) {
+                if (subFlySearch == undefined) {
+                return 'error';
+                }
+                if (subFlySearch.coord[1] == i) {
+                    //console.log(subFlySearch.departureDate);
+                    a = moment(subFlySearch.departureDate).format('DD MMM');
+                    b = moment(subFlySearch.arrivalDate).format('DD MMM');
+                    //return '0';
+                }
+            })
+            return [a, b];
+        }
+        
+        $scope.getFlySearchPlaces = function (i){
+            var a = 'gh';
             angular.forEach($scope.flySearch.subFlySearches, function(subFlySearch) {
                 if (subFlySearch == undefined) {
                 return 'error';
                 }
                 if (subFlySearch.coord[0] == i) {
-                    console.log(subFlySearch.departureDate);
-                    a = subFlySearch.departureDate ;
+                    //console.log(subFlySearch.departureDate);
+                    a = subFlySearch.departure.name +" - "+subFlySearch.arrival.name;
                     //return '0';
                 }
-                
-                return a;
             })
+            return a;
         }
         
+        $scope.getFlySearchMinPrices = function (i,j){
+            var a = 'x';
+            var b ="";
+            var c="";
+            angular.forEach($scope.flySearch.subFlySearches, function(subFlySearch) {
+                if (subFlySearch == undefined) {
+                return 'error';
+                }
+                if (subFlySearch.coord[0] == j) {
+                    //console.log(subFlySearch.coord);
+                    if (subFlySearch.coord[1] == i) {
+                        //console.log('nok');
+                        //console.log(subFlySearch.departureDate);
+                        a = subFlySearch.minPrice + " €" ;
+                        b = subFlySearch.durationMinPrice;
+                        //return '0';
+                    }
+                }
+            })
+            c = Math.floor(moment.duration(b).asHours()) + "h" + moment.utc(b).format('mm')+"m";
+            return [a,c];
+        }
         
         $scope.filterFlight = function (flights, wayType,indice) {
             var filteredFlights = [];
@@ -103,7 +247,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             return filteredFlights;
         }
         
-        $scope.getAirlines = function (travel) {
+        $scope.getTravelAirlines = function (travel) {
             var airlines = [];
             travel.airlinetext = "";
             angular.forEach(travel.flights, function(flight) {
@@ -123,7 +267,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             return travel.airlinetext;
         }
         
-        $scope.getPrice = function (travel) {
+        $scope.getTravelMinPrice = function (travel) {
             var minPrice = 1000000;
             angular.forEach(travel.prices, function(price) {
                 if (price.price < minPrice) {
@@ -164,6 +308,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             //Show the buttons on the selected travels.
             $scope.showBtnsFunction(travel);
         }
+        
         $scope.showBtnsFunction = function (travel) {
             //console.log(travel['@id']);
             travel.showBtnsBool = true;
@@ -171,16 +316,18 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             //console.log(travel.id);
             //$scope.showBtnsBool[travel.id] = true;
         }
+        
         $scope.hideBtnsFunction = function (travel) {
             //$scope.showBtnsBool[travel.id] = false;
             travel.showBtnsBool = false;
         }
+        
         $scope.hideDetailsFunction = function () {
             $scope.showDetailsBool = false;
             $scope.increaseBox[$scope.selectedTravel.id] = false;
         }
         
-       $scope.orderByFunction = function(input, attribute) {
+        $scope.orderByFunction = function(input, attribute) {
             if (!angular.isObject(input)) return input;
 
             var array = [];
@@ -196,73 +343,16 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             return array;
         }
         
-        
         $scope.updateTravelData = function () {
             angular.forEach($scope.travelData, function(travel) {
-
-                var outwardFlights = $scope.filterFlight(travel.flights,1,0);
-                var firstOutward = $scope.filterFlight(outwardFlights,0,1);
-                var lastOutward = $scope.filterFlight(outwardFlights,0,outwardFlights.length);                                 
-                var inwardFlights = $scope.filterFlight(travel.flights,2,0);
-                var firstInward = $scope.filterFlight(inwardFlights,0,1);
-                var lastInward = $scope.filterFlight(inwardFlights,0,inwardFlights.length);
-                                
-                // OUTWARD FLIGHT
-                // Info about departure
-                travel.outwardTakeOffDate = firstOutward[0].takeOffDate;
-                travel.outwardDeparture = firstOutward[0].departure;
-                //Info about arrival
-                travel.outwardLandDate = lastOutward[0].landDate;
-                travel.outwardDayDiff = moment(travel.outwardLandDate).date() - moment(travel.outwardTakeOffDate).date();
-                travel.outwardArrival = lastOutward[0].arrival;
-                //Global duration & type of flight
-                travel.outwardType = $scope.TypeFunction(outwardFlights);
-                travel.outwardTypeCss = outwardFlights.length;
-                travel.outwardDuration = Math.floor(moment.duration(moment(travel.outwardLandDate).diff(travel.outwardTakeOffDate)).asHours()) + "h" + moment.utc(moment(travel.outwardLandDate).diff(travel.outwardTakeOffDate)).format('mm')+"m";
-                
-                // INWARD FLIGHT
-                // Info about departure
-                travel.inwardTakeOffDate = firstInward[0].takeOffDate;
-                travel.inwardDeparture = firstInward[0].departure;
-                //Info about arrival
-                travel.inwardLandDate = lastInward[0].landDate;
-                travel.inwardDayDiff = moment(travel.inwardLandDate).date() - moment(travel.inwardTakeOffDate).date();
-                travel.inwardArrival = lastInward[0].arrival;
-                //Global duration & type of flight
-                travel.inwardType = $scope.TypeFunction(inwardFlights);
-                travel.inwardTypeCss = inwardFlights.length;
-                travel.inwardDuration = Math.floor(moment.duration(moment(travel.inwardLandDate).diff(travel.inwardTakeOffDate)).asHours()) + "h" + moment.utc(moment(travel.inwardLandDate).diff(travel.inwardTakeOffDate)).format('mm')+"m";
-                
-                //PURCHASE INFO
-                travel.airline = $scope.getAirlines(travel);
-                travel.minprice = $scope.getPrice(travel);
-                
-                travel.id = travel['@id'].substring(travel['@id'].lastIndexOf("/")+1,  travel['@id'].length);
                 //$scope.showBtnsBool[travel.id] = false;
                 $scope.increaseBox[travel.id] = false;
                 travel.showBtnsBool = false;
-                
-                var oldFlight = "";
-                var flightsData1 = $scope.orderByFunction(travel.flights, 'indice');
-                travel.flights = $scope.orderByFunction(flightsData1, 'wayType');
-                
-                angular.forEach(travel.flights, function(flight) {
-                    
-                    flight.duration = Math.floor(moment.duration(moment(flight.landDate).diff(flight.takeOffDate)).asHours()) + "h" + moment.utc(moment(flight.landDate).diff(flight.takeOffDate)).format('mm')+"m";
-                    //console.log(flight.duration);
-                    flight.corespondanceDuration = "";
-                    
-                    if (oldFlight != ""){
-                        var correspondanceStart = oldFlight.landDate;
-                        var correspondanceEnd = flight.takeOffDate;
-                        flight.correspondanceDuration = Math.floor(moment.duration(moment(correspondanceEnd).diff(correspondanceStart)).asHours()) + "h" + moment.utc(moment(correspondanceEnd).diff(correspondanceStart)).format('mm')+"m"; 
-                    }
-                    oldFlight = flight;
-                    
-                })
+                //print Duration
+                travel.outwardDurationPrint = Math.floor(moment.duration(travel.outwardDuration).asHours()) + "h" + moment.utc(travel.outwardDuration).format('mm')+"m";
+                travel.inwardDurationPrint = Math.floor(moment.duration(travel.inwardDuration).asHours()) + "h" + moment.utc(travel.inwardDuration).format('mm')+"m";
                 
             })
-
         };
         
         $scope.refreshFlySearchData();
