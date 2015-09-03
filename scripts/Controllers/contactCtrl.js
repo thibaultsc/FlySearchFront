@@ -22,8 +22,8 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 $scope.flySearch.placeTable = [];
                 $scope.flySearch.dateTable = [];
                 $scope.flySearch.directCheckBox = true;
-                $scope.flySearch.escaleCheckBox = false;
-                $scope.flySearch.escalesCheckBox = false;
+                $scope.flySearch.escaleCheckBox = true;
+                $scope.flySearch.escalesCheckBox = true;
                 
                 var i =0;  
                 //console.log($scope.flySearch.placeTable);
@@ -101,11 +101,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                                 travel.airline = $scope.getTravelAirlines(travel);
                                 travel.minPrice = $scope.getTravelMinPrice(travel);
                                 
-                                //Mise à jour du plus faible prix sur sous type de recherche
-                                if (travel.minPrice < subFlySearch.minPrice) {
-                                    subFlySearch.minPrice = travel.minPrice;
-                                    subFlySearch.durationMinPrice = Math.max (travel.inwardDuration, travel.outwardDuration);
-                                }
+
                                 travel.id = travel['@id'].substring(travel['@id'].lastIndexOf("/")+1,  travel['@id'].length);
                                 
                                 //format arrows
@@ -141,10 +137,20 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 //$scope.updateTravelData();
             });
         };
+        //Make sure that 2 stops gets uncheck when you uncheck 1 stop
+        $scope.escaleCheckBoxChange = function () {
+            if ( $scope.flySearch.escaleCheckBox == false && $scope.flySearch.directCheckBox == true)
+            {
+                $scope.flySearch.escalesCheckBox = false;
+            }
+            $scope.filterFlySearchTravels();
+        }
         
         $scope.filterFlySearchTravels = function () {
             $scope.travelData =[];
             angular.forEach($scope.flySearch.subFlySearches,function(subFlySearch) {
+                subFlySearch.minPrice = 1000000;
+                subFlySearch.durationMinPrice = "";
                 angular.forEach(subFlySearch.travels,function(travel) {
                     
                     //Filtre sur vol Direct / 1 Escale / 2 Escales
@@ -155,15 +161,28 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                     else {
                         if (travel.inwardTypeValue <3 && travel.outwardTypeValue <3) {
                             travel.showTravel = $scope.flySearch.escaleCheckBox;
-                            //console.log ($scope.flySearch.directCheckBox);
                         }
                         else {
                             travel.showTravel = $scope.flySearch.escalesCheckBox;
-                            //console.log ($scope.flySearch.directCheckBox);
                         }
-                    
                     }
-                    //console.log (travel.showTravel);
+                    
+                    //Filtre sur la durée
+                    if ( Math.max (travel.inwardDuration, travel.outwardDuration) > 1200000*$scope.flySearch.duration)
+                    {
+                        travel.showTravel = false;
+                    }
+                    
+                    
+
+                    
+                    
+                    if (travel.showTravel) {
+                        if (travel.minPrice < subFlySearch.minPrice) {
+                            subFlySearch.minPrice = travel.minPrice;
+                            subFlySearch.durationMinPrice = Math.max (travel.inwardDuration, travel.outwardDuration);
+                        }
+                    }
                     $scope.travelData.push(travel);
                     
                 })
@@ -231,6 +250,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 }
             })
             c = Math.floor(moment.duration(b).asHours()) + "h" + moment.utc(b).format('mm')+"m";
+            if (a=="1000000 €") {a = "x"; c=""}
             return [a,c];
         }
         
