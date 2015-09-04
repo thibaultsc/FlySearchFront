@@ -11,7 +11,8 @@ var flyWkApp = angular
                         'ui.bootstrap.datepicker',
                         'ngSanitize',
                         'ui.select',
-                        'restangular'
+                        'restangular',
+                        'chart.js'
     ])
 ;
 
