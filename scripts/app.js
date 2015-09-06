@@ -12,7 +12,8 @@ var flyWkApp = angular
                         'ngSanitize',
                         'ui.select',
                         'restangular',
-                        'chart.js'
+                        'chart.js',
+        'ui.slider'
     ])
 ;
 

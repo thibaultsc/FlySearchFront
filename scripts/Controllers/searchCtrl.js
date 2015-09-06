@@ -142,7 +142,7 @@ flyWkAppControllers.controller('searchCtrl', ['$scope', '$http', 'Restangular',
                 $scope.createSuccess = true;
                 $scope.createViolations = [];
 
-                $scope.createFlySearchForm.$setPristine();
+                //$scope.createFlySearchForm.$setPristine();
                 // show results
 
             }, function(response) {

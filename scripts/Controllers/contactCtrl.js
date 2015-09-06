@@ -15,8 +15,18 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         $scope.increaseBox = [];
         $scope.showDetailsOffset = 0;
         
+        //VOIR UI SLIDER
+        $scope.slider = {
+            'options': {
+                start: function (event, ui) { $log.info('Event: Slider start - set with slider options', event); },
+                stop: function (event, ui) { $log.info('Event: Slider stop - set with slider options', event); }
+            }
+        }
+
+        
+        
         $scope.refreshFlySearchData = function () {
-            console.log('presse');
+            //console.log('presse');
             apiFlySearch.get().then(function(flySearchData) {
                 $scope.travelData =[];
                 $scope.flySearch = flySearchData;
@@ -25,7 +35,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 $scope.flySearch.directCheckBox = true;
                 $scope.flySearch.escaleCheckBox = true;
                 $scope.flySearch.escalesCheckBox = true;
-                //$scope.flySearch.duration = 100;
+                //$scope.flySearch.duration = "2000000000000000000000000000000";
                 $scope.flySearch.minDuration = 0;
                 $scope.flySearch.maxDuration = 0;
                 
@@ -120,7 +130,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                                     $scope.flySearch.maxDuration = travel.duration;
                                     //console.log($scope.flySearch.maxDuration);
                                 }
-                                $scope.flySearch.duration = $scope.flySearch.maxDuration;
+                                $scope.flySearch.duration = $scope.flySearch.maxDuration.toString();
                                 
                                 
                                 //format arrows
@@ -131,6 +141,14 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                                 var oldFlight = "";
                                 var flightsData1 = $scope.orderByFunction(travel.flights, 'indice');
                                 travel.flights = $scope.orderByFunction(flightsData1, 'wayType');
+                                
+                                
+                                
+                                //Initialisation du filtre de Timing
+                                $scope.flySearch.maxSearchTimingDuration = 1000*60*60*24*2;
+                                $scope.flySearch.outwardDateFilter = [0, $scope.flySearch.maxSearchTimingDuration/2-1];
+                                $scope.flySearch.inwardDateFilter = [0, $scope.flySearch.maxSearchTimingDuration/2-1];
+                                
 
                                 angular.forEach(travel.flights, function(flight) {
 
@@ -167,8 +185,11 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         }
         
         $scope.filterFlySearchTravels = function () {
+            //console.log($scope.flySearch.duration);
             $scope.travelData =[];
             $scope.flySearch.dataDuration = [0,0,0,0,0,0,0,0,0,0];
+            $scope.flySearch.minDurationText = Math.floor(moment.duration($scope.flySearch.minDuration).asHours()) + "h" + moment.utc($scope.flySearch.minDuration).format('mm')+"m";
+            $scope.flySearch.durationText = Math.floor(moment.duration(parseInt($scope.flySearch.duration)).asHours()) + "h" + moment.utc(parseInt($scope.flySearch.duration)).format('mm')+"m";
             angular.forEach($scope.flySearch.subFlySearches,function(subFlySearch) {
                 subFlySearch.minPrice = 1000000;
                 subFlySearch.durationMinPrice = "";
@@ -196,24 +217,31 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                     {
                         travel.showTravel = false;
                     }
-                    console.log($scope.flySearch.dataDuration);
+                    //console.log($scope.flySearch.dataDuration);
                     
-                    
+                    //Chart to display flights
                     $scope.labels = ['', '', '', '', '','', '', '', '', ''];
                     //$scope.series = [''];
-                    $scope.options = {
-                    scaleShowGridLines : false,
-                    scaleShowLabels: false,
-                    scaleLineColor: "rgba(0,0,0,0)",
-                     showTooltips: false,
-                    barStrokeWidth : 0,
-                    barValueSpacing : 0,
-                    maintainAspectRatio: true}
+                    $scope.options = { scaleShowGridLines : false,scaleShowLabels: false, scaleLineColor: "rgba(0,0,0,0)",showTooltips: false,barStrokeWidth : 0,barValueSpacing : 0,maintainAspectRatio: true}
                     $scope.data = [];
-                    $scope.data.push($scope.flySearch.dataDuration);          
+                    $scope.data.push($scope.flySearch.dataDuration);   
+                    
+                    
+                    //Filter timing
+                    var outwardTiming = moment(travel.outwardTakeOffDate).diff(subFlySearch.departureDate);
+                    var inwardTiming = moment(travel.inwardTakeOffDate).diff(subFlySearch.arrivalDate);
+                    //calculation above is the difference in UTC between the search date and the takeoffdate
+                    
+                    if (outwardTiming > $scope.flySearch.outwardDateFilter[1] || outwardTiming < $scope.flySearch.outwardDateFilter[0])
+                    {
+                        travel.showTravel = false;
+                    }
+                    if (inwardTiming > $scope.flySearch.inwardDateFilter[1] || outwardTiming < $scope.flySearch.inwardDateFilter[0])
+                    {
+                        travel.showTravel = false;
+                    }
 
-                    
-                    
+
                     if (travel.showTravel) {
                         if (travel.minPrice < subFlySearch.minPrice) {
                             subFlySearch.minPrice = travel.minPrice;
@@ -410,6 +438,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 travel.inwardDurationPrint = Math.floor(moment.duration(travel.inwardDuration).asHours()) + "h" + moment.utc(travel.inwardDuration).format('mm')+"m";
                 
             })
+            
         };
         
         $scope.refreshFlySearchData();
