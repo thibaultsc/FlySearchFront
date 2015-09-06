@@ -15,16 +15,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         $scope.increaseBox = [];
         $scope.showDetailsOffset = 0;
         
-        //VOIR UI SLIDER
-        $scope.slider = {
-            'options': {
-                start: function (event, ui) { $log.info('Event: Slider start - set with slider options', event); },
-                stop: function (event, ui) { $log.info('Event: Slider stop - set with slider options', event); }
-            }
-        }
 
-        
-        
         $scope.refreshFlySearchData = function () {
             //console.log('presse');
             apiFlySearch.get().then(function(flySearchData) {
@@ -32,12 +23,8 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 $scope.flySearch = flySearchData;
                 $scope.flySearch.placeTable = [];
                 $scope.flySearch.dateTable = [];
-                $scope.flySearch.directCheckBox = true;
-                $scope.flySearch.escaleCheckBox = true;
-                $scope.flySearch.escalesCheckBox = true;
-                //$scope.flySearch.duration = "2000000000000000000000000000000";
                 $scope.flySearch.minDuration = 0;
-                $scope.flySearch.maxDuration = 0;
+                $scope.flySearch.maxDuration = 10000;
                 
                 var i =0;  
                 //console.log($scope.flySearch.placeTable);
@@ -126,12 +113,10 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                                     $scope.flySearch.minDuration = travel.duration;
                                     //console.log($scope.flySearch.minDuration);
                                 }
-                                if (travel.duration > $scope.flySearch.maxDuration || $scope.flySearch.maxDuration == 0) {
+                                if (travel.duration > $scope.flySearch.maxDuration) {
                                     $scope.flySearch.maxDuration = travel.duration;
                                     //console.log($scope.flySearch.maxDuration);
                                 }
-                                $scope.flySearch.duration = $scope.flySearch.maxDuration.toString();
-                                
                                 
                                 //format arrows
                                 travel.outwardTypeCss = outwardFlights.length;
@@ -142,12 +127,6 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                                 var flightsData1 = $scope.orderByFunction(travel.flights, 'indice');
                                 travel.flights = $scope.orderByFunction(flightsData1, 'wayType');
                                 
-                                
-                                
-                                //Initialisation du filtre de Timing
-                                $scope.flySearch.maxSearchTimingDuration = 1000*60*60*24*2;
-                                $scope.flySearch.outwardDateFilter = [0, $scope.flySearch.maxSearchTimingDuration/2-1];
-                                $scope.flySearch.inwardDateFilter = [0, $scope.flySearch.maxSearchTimingDuration/2-1];
                                 
 
                                 angular.forEach(travel.flights, function(flight) {
@@ -170,26 +149,39 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                         })
                     }
                 })
-                 
+                 $scope.filter.duration = $scope.flySearch.maxDuration.toString();
                  $scope.filterFlySearchTravels();
                 //$scope.updateTravelData();
             });
         };
         //Make sure that 2 stops gets uncheck when you uncheck 1 stop
+        
+        
         $scope.escaleCheckBoxChange = function () {
-            if ( $scope.flySearch.escaleCheckBox == false && $scope.flySearch.directCheckBox == true)
+            if ( $scope.filter.escale == false && $scope.filter.direct == true)
             {
-                $scope.flySearch.escalesCheckBox = false;
+                $scope.filter.escales = false;
             }
             $scope.filterFlySearchTravels();
         }
         
+        
+        $scope.filter = {
+            direct : true,
+            escale : true,
+            escales : true,
+            duration : "1000",
+            maxTiming : 172800000,
+            outwardTiming: [0, 86400000-1],
+            inwardTiming : [0, 86400000-1]
+        }
+
+        
+        
         $scope.filterFlySearchTravels = function () {
-            //console.log($scope.flySearch.duration);
+            console.log($scope.filter);
             $scope.travelData =[];
             $scope.flySearch.dataDuration = [0,0,0,0,0,0,0,0,0,0];
-            $scope.flySearch.minDurationText = Math.floor(moment.duration($scope.flySearch.minDuration).asHours()) + "h" + moment.utc($scope.flySearch.minDuration).format('mm')+"m";
-            $scope.flySearch.durationText = Math.floor(moment.duration(parseInt($scope.flySearch.duration)).asHours()) + "h" + moment.utc(parseInt($scope.flySearch.duration)).format('mm')+"m";
             angular.forEach($scope.flySearch.subFlySearches,function(subFlySearch) {
                 subFlySearch.minPrice = 1000000;
                 subFlySearch.durationMinPrice = "";
@@ -197,15 +189,15 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
 
                     //Filtre sur vol Direct / 1 Escale / 2 Escales
                     if (travel.inwardTypeValue == 1 && travel.outwardTypeValue == 1) {
-                        travel.showTravel = $scope.flySearch.directCheckBox;
+                        travel.showTravel = $scope.filter.direct;
                         //console.log (travel.inwardTypeValue);
                     }
                     else {
                         if (travel.inwardTypeValue <3 && travel.outwardTypeValue <3) {
-                            travel.showTravel = $scope.flySearch.escaleCheckBox;
+                            travel.showTravel = $scope.filter.escale;
                         }
                         else {
-                            travel.showTravel = $scope.flySearch.escalesCheckBox;
+                            travel.showTravel = $scope.filter.escales;
                         }
                     }
                     
@@ -213,15 +205,13 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                     //console.log(travel.duration + "   " + $scope.flySearch.duration);
                     var z = Math.floor((travel.duration - $scope.flySearch.minDuration) / ($scope.flySearch.maxDuration + 1 - $scope.flySearch.minDuration)*$scope.flySearch.dataDuration.length);
                     $scope.flySearch.dataDuration[z] = $scope.flySearch.dataDuration[z] +1;
-                    if ( travel.duration > $scope.flySearch.duration)
+                    if ( travel.duration > $scope.filter.duration)
                     {
                         travel.showTravel = false;
                     }
-                    //console.log($scope.flySearch.dataDuration);
                     
                     //Chart to display flights
                     $scope.labels = ['', '', '', '', '','', '', '', '', ''];
-                    //$scope.series = [''];
                     $scope.options = { scaleShowGridLines : false,scaleShowLabels: false, scaleLineColor: "rgba(0,0,0,0)",showTooltips: false,barStrokeWidth : 0,barValueSpacing : 0,maintainAspectRatio: true}
                     $scope.data = [];
                     $scope.data.push($scope.flySearch.dataDuration);   
@@ -232,11 +222,11 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                     var inwardTiming = moment(travel.inwardTakeOffDate).diff(subFlySearch.arrivalDate);
                     //calculation above is the difference in UTC between the search date and the takeoffdate
                     
-                    if (outwardTiming > $scope.flySearch.outwardDateFilter[1] || outwardTiming < $scope.flySearch.outwardDateFilter[0])
+                    if (outwardTiming > $scope.filter.outwardTiming[1] || outwardTiming < $scope.filter.outwardTiming[0])
                     {
                         travel.showTravel = false;
                     }
-                    if (inwardTiming > $scope.flySearch.inwardDateFilter[1] || outwardTiming < $scope.flySearch.inwardDateFilter[0])
+                    if (inwardTiming > $scope.filter.inwardTiming[1] || outwardTiming < $scope.filter.inwardTiming[0])
                     {
                         travel.showTravel = false;
                     }

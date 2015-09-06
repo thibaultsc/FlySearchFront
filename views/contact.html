@@ -8,13 +8,13 @@
             <p> Filtres</p>
             <div class="checkbox">
                 <label style="display:block;">
-                    <input type="checkbox" ng-model="flySearch.directCheckBox" ng-change="filterFlySearchTravels()"> Direct
+                    <input type="checkbox" ng-model="filter.direct" ng-change="filterFlySearchTravels()"> Direct
                 </label>
                 <label style="display:block;">
-                    <input type="checkbox" ng-model="flySearch.escaleCheckBox" ng-change="escaleCheckBoxChange()"> 1 Escale
+                    <input type="checkbox" ng-model="filter.escale" ng-change="escaleCheckBoxChange()"> 1 Escale
                 </label> 
                 <label style="display:block;">
-                    <input type="checkbox" ng-model="flySearch.escalesCheckBox" ng-change="filterFlySearchTravels()"> 2 Escales
+                    <input type="checkbox" ng-model="filter.escales" ng-change="filterFlySearchTravels()"> 2 Escales
                 </label> 
             </div>
             <div class="col-lg-12" style="height:20px;">
@@ -23,19 +23,19 @@
                 </canvas>
             </div>
             <div style="padding-left:20px;padding-right:15px; position:relative;">
-                <input type="range" min="{{flySearch.minDuration}}" max="{{flySearch.maxDuration}}" ng-change="filterFlySearchTravels()" ng-model="flySearch.duration">
+                <input type="range" min="{{flySearch.minDuration}}" max="{{flySearch.maxDuration}}" ng-change="filterFlySearchTravels()" ng-model="filter.duration">
             </div>
-            <span>Entre {{flySearch.minDurationText}} et {{flySearch.durationText}} </span>
+            <span>Entre {{flySearch.minDuration |date: 'HH': 'UTC'}}h{{flySearch.minDuration |date: 'mm': 'UTC'}}m et {{filter.duration |date: 'HH': 'UTC'}}h{{filter.duration |date: 'mm': 'UTC'}}m </span>
             
              <div class="sliderExample">
                  Horaire départ aller
-                <div ui-slider="{range: true}" min="0" max="{{flySearch.maxSearchTimingDuration}}" step="0.01" use-decimals ng-model="flySearch.outwardDateFilter" ng-change="filterFlySearchTravels()"></div>
-                 Entre {{flySearch.outwardDateFilter[0] |date :'HH:mm' : 'UTC'}} et {{flySearch.outwardDateFilter[1]|date :'HH:mm' : 'UTC'}}
+                <div ui-slider="{range: true}" min="0" max="{{filter.maxTiming}}" step="0.01" use-decimals ng-model="filter.outwardTiming" ng-change="filterFlySearchTravels()"></div>
+                 Entre {{filter.outwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{filter.outwardTiming[1]|date :'HH:mm' : 'UTC'}}
             </div>
              <div class="sliderExample">
                  Horaire départ retour
-                <div ui-slider="{range: true}" min="0" max="{{flySearch.maxSearchTimingDuration}}" step="0.01" use-decimals ng-model="flySearch.inwardDateFilter" ng-change="filterFlySearchTravels()"></div>
-                 Entre {{flySearch.inwardDateFilter[0] |date :'HH:mm' : 'UTC'}} et {{flySearch.inwardDateFilter[1]|date :'HH:mm' : 'UTC'}}
+                <div ui-slider="{range: true}" min="0" max="{{filter.maxTiming}}" step="0.01" use-decimals ng-model="filter.inwardTiming" ng-change="filterFlySearchTravels()"></div>
+                 Entre {{filter.inwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{filter.inwardTiming[1]|date :'HH:mm' : 'UTC'}}
             </div>
         </div>
         
