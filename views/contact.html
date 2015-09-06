@@ -30,12 +30,12 @@
              <div class="sliderExample">
                  Horaire départ aller
                 <div ui-slider="{range: true}" min="0" max="{{filter.maxTiming}}" step="0.01" use-decimals ng-model="filter.outwardTiming" ng-change="filterFlySearchTravels()"></div>
-                 Entre {{filter.outwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{filter.outwardTiming[1]|date :'HH:mm' : 'UTC'}}
+                 Entre {{outwardNextDay[0]}}{{filter.outwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{outwardNextDay[1]}}{{filter.outwardTiming[1]|date :'HH:mm' : 'UTC'}}
             </div>
              <div class="sliderExample">
                  Horaire départ retour
                 <div ui-slider="{range: true}" min="0" max="{{filter.maxTiming}}" step="0.01" use-decimals ng-model="filter.inwardTiming" ng-change="filterFlySearchTravels()"></div>
-                 Entre {{filter.inwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{filter.inwardTiming[1]|date :'HH:mm' : 'UTC'}}
+                 Entre {{inwardNextDay[0]}}{{filter.inwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{inwardNextDay[1]}}{{filter.inwardTiming[1]|date :'HH:mm' : 'UTC'}}
             </div>
         </div>
         

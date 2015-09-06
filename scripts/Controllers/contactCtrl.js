@@ -14,6 +14,8 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         $scope.travelData =[];
         $scope.increaseBox = [];
         $scope.showDetailsOffset = 0;
+        $scope.outwardNextDay = ["",""];
+        $scope.inwardNextDay = ["",""];
         
 
         $scope.refreshFlySearchData = function () {
@@ -171,7 +173,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             escale : true,
             escales : true,
             duration : "1000",
-            maxTiming : 172800000,
+            maxTiming : 172799999,
             outwardTiming: [0, 86400000-1],
             inwardTiming : [0, 86400000-1]
         }
@@ -181,6 +183,8 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         $scope.filterFlySearchTravels = function () {
             console.log($scope.filter);
             $scope.travelData =[];
+            $scope.outwardNextDay = ["",""];
+            $scope.inwardNextDay = ["",""];
             $scope.flySearch.dataDuration = [0,0,0,0,0,0,0,0,0,0];
             angular.forEach($scope.flySearch.subFlySearches,function(subFlySearch) {
                 subFlySearch.minPrice = 1000000;
@@ -221,6 +225,22 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                     var outwardTiming = moment(travel.outwardTakeOffDate).diff(subFlySearch.departureDate);
                     var inwardTiming = moment(travel.inwardTakeOffDate).diff(subFlySearch.arrivalDate);
                     //calculation above is the difference in UTC between the search date and the takeoffdate
+                    
+                    //inwardTiming > 24 h
+                    if ($scope.filter.outwardTiming[1]>86400000) {
+                        $scope.outwardNextDay[1] = "le lendemain ";
+                    }
+                    
+                    if ($scope.filter.inwardTiming[1]>86400000) {
+                        $scope.inwardNextDay[1] = "le lendemain ";
+                    }
+                    if ($scope.filter.outwardTiming[0]>86400000) {
+                        $scope.outwardNextDay[0] = "le lendemain ";
+                    }
+                    
+                    if ($scope.filter.inwardTiming[0]>86400000) {
+                        $scope.inwardNextDay[0] = "le lendemain ";
+                    }
                     
                     if (outwardTiming > $scope.filter.outwardTiming[1] || outwardTiming < $scope.filter.outwardTiming[0])
                     {
