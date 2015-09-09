@@ -106,6 +106,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                                 
 
                                 travel.id = travel['@id'].substring(travel['@id'].lastIndexOf("/")+1,  travel['@id'].length);
+                                travel.hide = [false,false,false,false,false,false,false,false];
                                 
                                 
                                 //calcul des durée et mise à jour des bornes de durée pour filtre
@@ -181,7 +182,6 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         
         
         $scope.filterFlySearchTravels = function () {
-            console.log($scope.filter);
             $scope.travelData =[];
             $scope.outwardNextDay = ["",""];
             $scope.inwardNextDay = ["",""];
@@ -251,6 +251,9 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                         travel.showTravel = false;
                     }
 
+                    if (travel.hide[0] == true) {
+                        travel.showTravel = false;
+                    }
 
                     if (travel.showTravel) {
                         if (travel.minPrice < subFlySearch.minPrice) {
@@ -263,6 +266,95 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 })
             })
             $scope.updateTravelData();
+        }
+        $scope.updateFilter = function (travel, a) {
+            //usine a gaz simplifiable si on garde dans la situation existante
+            switch (a) {
+                    
+                case 0:
+                    $scope.showHideInfoBool = false;
+                    $scope.filter.duration = $scope.oldFilter.duration;
+                    $scope.filter.outwardTiming[0] = $scope.oldFilter.outwardTiming[0];
+                    $scope.filter.outwardTiming[1] = $scope.oldFilter.outwardTiming[1];
+                    $scope.filter.inwardTiming[0] = $scope.oldFilter.inwardTiming[0];
+                    $scope.filter.inwardTiming[1] = $scope.oldFilter.inwardTiming[1];
+                    
+                    travel.hide[0] = !travel.hide[0];
+                    travel.hide[7] = !travel.hide[7];
+                    travel.hide[1] = false;
+                    travel.hide[2] = false;
+                    travel.hide[3] = false;
+                    travel.hide[4] = false;
+                    travel.hide[5] = false;
+                    travel.hide[6] = false;
+                case -1:
+                    $scope.showHideInfoBool = false;
+                    travel.hide[7] = !travel.hide[7];
+                    travel.hide[0] = !travel.hide[0];
+                    break;
+                case 1:
+                    if (!travel.hide[a]) {
+                        $scope.filter.duration = travel.duration - 1;
+                    }
+                    else
+                    {
+                        $scope.filter.duration = $scope.oldFilter.duration;
+                    }
+                    break;
+                case 2:
+                    if (!travel.hide[a]) {
+                        $scope.filter.outwardTiming[0] = moment(travel.outwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].departureDate)+1;
+                    }
+                    else
+                    {
+                        $scope.filter.outwardTiming[0] = $scope.oldFilter.outwardTiming[0];
+                    }
+                    break;
+                case 3:
+                    if (!travel.hide[a]) {
+                        $scope.filter.outwardTiming[0] = moment(travel.outwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].departureDate)+1;
+                    }
+                    else
+                    {
+                        $scope.filter.outwardTiming[0] = $scope.oldFilter.outwardTiming[0];
+                    }
+                    break;
+                case 4:
+                    if (!travel.hide[a]) {
+                        $scope.filter.outwardTiming[1] = moment(travel.outwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].departureDate)-1;
+                    }
+                    else
+                    {
+                        $scope.filter.outwardTiming[1] = $scope.oldFilter.outwardTiming[1];
+                    }
+                    
+                    break;
+                case 5:
+                    if (!travel.hide[a]) {
+                        $scope.filter.inwardTiming[0] = moment(travel.inwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].arrivalDate)+1;
+                    }
+                    else
+                    {
+                        $scope.filter.inwardTiming[0] = $scope.oldFilter.inwardTiming[0];
+                    }
+                    
+                    break;
+                case 6:
+                    if (!travel.hide[a]) {
+                        $scope.filter.inwardTiming[1] = moment(travel.inwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].arrivalDate)-1;
+                    }
+                    else
+                    {
+                        $scope.filter.inwardTiming[1] = $scope.oldFilter.inwardTiming[1];
+                    }
+                    
+                    break;
+            }
+            travel.hide[a] = !travel.hide[a];
+            travel.hide[7] = !travel.hide[7];
+            
+            $scope.filterFlySearchTravels();
+            
         }
         
         $scope.getNumber = function(num) {
@@ -401,7 +493,9 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             //update the new selectedTravel value
             $scope.selectedTravel = travel;
         }
+        
         $scope.showHideProposition = function (travel,$event) {
+            
             $scope.hideDetailsFunction();
             
             if ($event !== undefined) {
@@ -410,8 +504,11 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             }
             
             //update the new selectedTravel value
+            travel.hide[0] = true;
             $scope.selectedTravel = travel;
             $scope.showHideInfoBool = true;
+            $scope.filterFlySearchTravels();
+            $scope.oldFilter = angular.copy($scope.filter);
             
         } 
         
@@ -457,7 +554,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 //print Duration
                 travel.outwardDurationPrint = Math.floor(moment.duration(travel.outwardDuration).asHours()) + "h" + moment.utc(travel.outwardDuration).format('mm')+"m";
                 travel.inwardDurationPrint = Math.floor(moment.duration(travel.inwardDuration).asHours()) + "h" + moment.utc(travel.inwardDuration).format('mm')+"m";
-                
+                travel.durationPrint = Math.floor(moment.duration(travel.duration).asHours()) + "h" + moment.utc(travel.duration).format('mm')+"m";
             })
             
         };

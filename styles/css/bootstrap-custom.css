@@ -148,8 +148,6 @@ time.icon span
     position:absolute;
     top:1px;
     right:1px;
-    border-bottom-left-radius: 100px;
-    
 }
 
 .travel-airlines {
@@ -215,4 +213,11 @@ time.icon span
 
 .pointer {
     cursor: pointer;
+}
+
+.btn-true {
+  background-color: indianred;
+}
+.btn-false {
+  .button-variant(@btn-default-color; @btn-default-bg; @btn-default-border);
 }
