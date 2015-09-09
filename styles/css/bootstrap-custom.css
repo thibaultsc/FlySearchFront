@@ -212,3 +212,7 @@ time.icon span
 .th-align-right {
     text-align: right;
 }
+
+.pointer {
+    cursor: pointer;
+}

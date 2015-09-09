@@ -391,18 +391,29 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             }
             //Show the details box
             $scope.showDetailsBool = true;
-            //console.log($event);
+
             if ($event !== undefined) {
                 //Get back the vertical offset of the selected travel to align the details travel box
-                $scope.showDetailsOffset = angular.element($event.currentTarget).prop('offsetTop');
+                $scope.showDetailsOffset = angular.element($event.currentTarget).prop('offsetParent').offsetTop;
             }
             //increase the size of the travel box
             $scope.increaseBox[travel.id] = true;
             //update the new selectedTravel value
             $scope.selectedTravel = travel;
-            //Show the buttons on the selected travels.
-            $scope.showBtnsFunction(travel);
         }
+        $scope.showHideProposition = function (travel,$event) {
+            $scope.hideDetailsFunction();
+            
+            if ($event !== undefined) {
+                //Get back the vertical offset of the selected travel to align the details travel box
+                $scope.showHideInfoOffset = angular.element($event.currentTarget).prop('offsetParent').offsetTop;
+            }
+            
+            //update the new selectedTravel value
+            $scope.selectedTravel = travel;
+            $scope.showHideInfoBool = true;
+            
+        } 
         
         $scope.showBtnsFunction = function (travel) {
             //console.log(travel['@id']);

@@ -40,17 +40,21 @@
         </div>
         
     </div>
-    <div ng-mouseleave="hideDetailsFunction()">
-        <!-- Details of the selected travel -->
+    <div>
+        <!-- Right Column -->
         <div class="col-lg-4 col-lg-push-5"> 
+            <!-- Show details of the fligth -->
             <div ng-include="'views/results/detailsBox.html'"></div>
+            <!-- Hide options -->
+            <div ng-include="'views/results/hideBox.html'"></div>
         </div>
+        <!-- Middle column -->
         <div class="col-lg-5 col-lg-pull-4" > 
-            <!-- Comparison box -->
+            <!-- Comparison -->
             <div ng-include="'views/results/comparisonBox.html'"></div>
             <!-- Results list -->
             <div class="row">
-                <div class="travel-div" ng-repeat="travel in travelData | filter: { showTravel: true } | orderBy: 'minPrice'"  ng-mouseover="showDetailsFunction(travel,$event)" ng-mouseleave="hideBtnsFunction(travel)">
+                <div class="travel-div" ng-repeat="travel in travelData | filter: { showTravel: true } | orderBy: 'minPrice'" ng-mouseover="showBtnsFunction(travel)" ng-mouseleave="hideBtnsFunction(travel)">
                     <div ng-include="'views/results/travelBox.html'"></div>
                 </div>
             </div>
