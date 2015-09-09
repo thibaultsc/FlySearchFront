@@ -1,0 +1,84 @@
+
+<div class="travel-box travel-box-false" style="padding:20px; margin-top:{{showDetailsOffset}}px" ng-hide="!showDetailsBool">
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="" class="btn btn-default btn-lg btn-block">Acheter à {{selectedTravel.minPrice}} €</a>
+            <div class="btn-group btn-group-justified">
+                <p class="btn btn-default btn-lg no-border"><i class="glyphicon glyphicon-star-empty"></i></p>
+                <p class="btn btn-default btn-lg no-border"><i class="glyphicon glyphicon-share"></i></p>
+            </div>
+        </div>
+    </div>
+    <p style="margin:2px;">Autres vendeurs :</p>
+        <div  ng-repeat="price in selectedTravel.prices | orderBy: 'price'" style="display:inline-block;">
+            <a href="{{price.url}}" style="display:inline-block; margin-right:10px;">{{price.agency}} ({{price.price}} €) </a>
+        </div>    
+
+
+<div class="row well h4" style="padding:5px; text-align:center; margin:5px; font-weight:bold;">Aller<span class="h5"> - {{selectedTravel.outwardDurationPrint}}</span></div>
+    <div  class="table-responsive" ng-repeat="flight in selectedTravel.flights  | filter: { wayType: 1 } | orderBy: 'indice'" >
+    <table class="table table-no-margin">
+      <thead ng-hide="flight.indice==1">
+        <tr>
+          <th><i class="glyphicon glyphicon-time"></i></th>
+          <th class="th-no-bold" colspan = "3">Correspondance</th>
+          <th class="th-no-bold th-align-right">{{flight.correspondanceDuration}}</th>
+        </tr>
+      </thead>
+      <thead>
+        <tr>
+          <th><i class="glyphicon glyphicon-plane"></th>
+          <th class="th-no-bold"  colspan = "3">{{flight.airline}} - {{flight.flightNumber}}</th>
+          <th class="th-no-bold th-align-right">{{flight.duration}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row" ></th>
+          <td colspan = "2"><h5 style="display: table-cell;font-weight:bold;">{{flight.takeOffDate | date:'HH:mm' }}</h5><h6 style="display: table-cell; padding-left:6px;">{{flight.takeOffDate | date:'dd MMM' }}</h6></td>
+          <td><span class="label label-default ng-binding" style="background-color:white; color:grey; border: 1px solid #ccc;">{{flight.departure.code}}</span>  {{flight.departure.name}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <th scope="row"></th>
+          <td colspan = "2"><h5 style="display: table-cell;font-weight:bold;">{{flight.landDate | date:'HH:mm'}}</h5><h6 style="display: table-cell; padding-left:6px;">{{flight.landDate | date:'dd MMM'}}</h6></td>
+          <td><span class="label label-default ng-binding" style="background-color:white; color:grey; border: 1px solid #ccc;">{{flight.arrival.code}}</span> {{flight.arrival.name}}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="row well h4" style="padding:5px; text-align:center; margin:5px; font-weight:bold;">Retour<span class="h5"> - {{selectedTravel.inwardDurationPrint}}</span></div>
+    <div class="table-responsive" ng-repeat="flight in selectedTravel.flights  | filter: { wayType: 2 } | orderBy: 'indice'" >
+    <table class="table table-no-margin">
+      <thead ng-hide="flight.indice==1">
+        <tr>
+          <th><i class="glyphicon glyphicon-time"></i></th>
+          <th class="th-no-bold" colspan = "3">Correspondance</th>
+          <th class="th-no-bold th-align-right">{{flight.correspondanceDuration}}</th>
+        </tr>
+      </thead>
+      <thead>
+        <tr>
+          <th><i class="glyphicon glyphicon-plane"></th>
+          <th class="th-no-bold"  colspan = "3">{{flight.airline}} - {{flight.flightNumber}}</th>
+          <th class="th-no-bold th-align-right">{{flight.duration}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row" ></th>
+          <td colspan = "2"><h5 style="display: table-cell;font-weight:bold;">{{flight.takeOffDate | date:'HH:mm' }}</h5><h6 style="display: table-cell; padding-left:6px;">{{flight.takeOffDate | date:'dd MMM' }}</h6></td>
+          <td><span class="label label-default ng-binding" style="background-color:white; color:grey; border: 1px solid #ccc;">{{flight.departure.code}}</span>  {{flight.departure.name}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <th scope="row"></th>
+          <td colspan = "2"><h5 style="display: table-cell;font-weight:bold;">{{flight.landDate | date:'HH:mm'}}</h5><h6 style="display: table-cell; padding-left:6px;">{{flight.landDate | date:'dd MMM'}}</h6></td>
+          <td><span class="label label-default ng-binding" style="background-color:white; color:grey; border: 1px solid #ccc;">{{flight.arrival.code}}</span> {{flight.arrival.name}}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>  
+</div>

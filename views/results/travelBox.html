@@ -1,0 +1,68 @@
+<a ng-click="showDetailsFunction(travel)" >
+    <div id="{{travel.id}}" class="travel-box travel-box-{{increaseBox[travel.id]}}" style="padding-top:20px;" ng-mouseover="showDetailsFunction(travel)">  
+        <div id="airline" class="travel-airlines h5">{{travel.airline}}</div>
+        <div id="price" class="col-xs-3 travel-price col-xs-push-9">
+            <div class="row h3" style="text-align:center; margin-top:8px;">{{travel.minPrice}} €</div>
+        </div>
+        <div id="aller" class="way-box col-xs-9 col-xs-pull-3">
+            <div class="row">
+                <div class="col-xs-2" style="text-align:center; ">
+                    <time class="icon">
+                      <em>{{travel.outwardTakeOffDate | date:'MMM'}}</em>
+                      <span>{{travel.outwardTakeOffDate | date:'dd'}}</span>
+                    </time>
+                </div>    
+                <div class="col-xs-3" style="text-align:center;">
+                    <span class="h4" style="font-weight:bold;">{{travel.outwardTakeOffDate | date:'HH:mm'}}</span>
+                    <span class="label label-default label-departure" style="">{{travel.outwardDeparture.code}}</span>
+                </div>
+                <div class="col-xs-4" style="text-align:center;">
+                    <span class="h5" style="margin-top:0px;">{{travel.outwardType}}</span>
+                    <div class="fly-arrow arrow-{{travel.outwardTypeCss}}" style="margin-top:0px;"></div>
+                    <div class="leg-stops-green" style="margin-top:-4px;">{{travel.outwardDurationPrint}}</div>
+                </div>
+                <div class="col-xs-3" style="text-align:center;">
+                    <span class="h4" style="font-weight:bold;">{{travel.outwardLandDate | date:'HH:mm'}}<h6 style="display:inline;" ng-hide="{{travel.outwardDayDiff}} == 0">(+1)</h6></span>
+                    <span class="label label-success label-{{travel.subFlySearchParent}}">{{travel.outwardArrival.code}}</span>
+                </div>
+            </div>
+        </div>
+        <div id="retour" class="way-box col-xs-9">
+            <div class="row">
+                <div class="col-xs-2" style="text-align:center; ">
+                    <time class="icon">
+                      <em>{{travel.inwardTakeOffDate | date:'MMM'}}</em>
+                      <span>{{travel.inwardTakeOffDate | date:'dd'}}</span>
+                    </time>
+                </div>    
+                <div class="col-xs-3" style="text-align:center;">
+                    <span class="h4" style="font-weight:bold;">{{travel.inwardTakeOffDate | date:'HH:mm'}}</span>
+                    <span class="label label-success label-{{travel.subFlySearchParent}}">{{travel.inwardDeparture.code}}</span>
+                </div>
+                <div class="col-xs-4" style="text-align:center;">
+                    <span class="h5" style="margin-top:0px;">{{travel.inwardType}}</span>
+                    <div class="fly-arrow arrow-{{travel.inwardTypeCss}}" style="margin-top:0px;"></div>
+
+                    <div class="leg-stops-green" style="margin-top:-4px;">{{travel.inwardDurationPrint}}</div>
+
+
+                </div>
+                <div class="col-xs-3" style="text-align:center;">
+                    <span class="h4" style="font-weight:bold;">{{travel.inwardLandDate | date:'HH:mm'}}<h6 style="display:inline;" ng-hide="{{travel.inwardDayDiff}} == 0">(+{{travel.inwardDayDiff}})</h6></span>
+                    <span class="label label-default" style="background-color:white; color:grey; border: 1px solid #ccc;">{{travel.inwardArrival.code}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</a>
+<div class="btn-appear" >
+    <div class="btn btn-default travel-hide-btn no-border" title="Masquer ce vol" style="display: block;"><i class="glyphicon glyphicon-ban-circle btn-show-{{travel.showBtnsBool}}"></i></div>                  
+    <div class="btn btn-default travel-hide-btn no-border" title="Masquer ce vol" style="display: block;"><i class="glyphicon glyphicon-option-vertical btn-show-{{travel.showBtnsBool}}"></i></div>
+    <div class="travel-btns col-xs-3">
+        <a href="" class="btn btn-default btn-block">Acheter</a>
+        <div class="btn-group btn-group-justified ">
+            <p class="btn btn-default btn-lg no-border"><i class="glyphicon glyphicon-star-empty btn-show-{{travel.showBtnsBool}}"></i></p>
+            <p class="btn btn-default btn-lg no-border"><i class="glyphicon glyphicon-share btn-show-{{travel.showBtnsBool}}"></i></p>
+        </div>
+    </div>
+</div>

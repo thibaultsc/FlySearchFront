@@ -226,7 +226,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                     var inwardTiming = moment(travel.inwardTakeOffDate).diff(subFlySearch.arrivalDate);
                     //calculation above is the difference in UTC between the search date and the takeoffdate
                     
-                    //inwardTiming > 24 h
+                    //display text inwardTiming > 24 h
                     if ($scope.filter.outwardTiming[1]>86400000) {
                         $scope.outwardNextDay[1] = "le lendemain ";
                     }

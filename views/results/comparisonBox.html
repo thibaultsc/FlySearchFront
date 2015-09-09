@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-xs-12 well" style="margin-bottom:30px;margin-top:-70px">
+        <div class="table-responsive">
+            <table class="table table-center table-no-margin">
+              <thead>
+                <tr>
+                  <th>Trips</th>
+                  <th ng-repeat="j in getNumber(flySearch.placeTable.length)"><span class="label label-success label-{{$index+1}}" >{{getFlySearchPlaces(j)}}</span></th>
+                </tr>
+              </thead>
+              <tbody  ng-repeat="i in getNumber(flySearch.dateTable.length)">
+                <tr>
+                    <th scope="row">{{getFlySearchDates(i)[0]}}<br/>{{getFlySearchDates(i)[1]}}</th>
+                      <td ng-repeat="j in getNumber(flySearch.placeTable.length) track by $index"><h3 style="margin:0px;">{{getFlySearchMinPrices(i,j)[0]}}</h3><h5 style="margin:0px;">{{getFlySearchMinPrices(i,j)[1]}}</h5></td>
+                    </div>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
