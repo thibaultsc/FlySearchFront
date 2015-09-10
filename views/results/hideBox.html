@@ -1,25 +1,38 @@
 <div class="travel-box travel-box-false" style="padding:20px; margin-top:{{showHideInfoOffset}}px" ng-hide="!showHideInfoBool">
 
 <div ng-hide="selectedTravel.hide[7]">
-    <p class="btn btn-default btn-block" ng-click="updateFilter(selectedTravel,-1)"> Annulez la suppression</p>
-    
-    <h4>OU</h4>
-    <h4>affinez vos filtres en disant pourquoi vous avez supprimé le vol</h4>
-<div class="row well h5" style="padding:5px; text-align:center; margin:5px; ">Info générales</div>
     <div class="btn-group btn-group-justified">
+    <p class="btn btn-default btn-block" style="font-weight:bold;" ng-click="updateFilter(selectedTravel,-1)">Annulez la supression</p>
+    </div>
+    
+    <div class="row h4" style="padding:5px; text-align:center; margin:5px;  ">OU</div>
+    <div class="row well h5" style="padding:5px; text-align:center; margin:5px; font-weight:bold; ">Affinez vos filtres </div>
+    <h5>Pourquoi vous avez supprimé le vol ? </h5   >
+    
+        
+    <div class="btn-group btn-group-justified" style="margin-top:4px;">
         <p class="btn btn-default" ng-click="updateFilter(selectedTravel,1)"ng-hide="selectedTravel.hide[1]"><i class="glyphicon glyphicon-hourglass"></i> Trop long ({{selectedTravel.durationPrint}})</p>
         <p class="btn btn-info" ng-click="updateFilter(selectedTravel,1)"ng-hide="!selectedTravel.hide[1]"><i class="glyphicon glyphicon-hourglass"></i> Trop long ({{selectedTravel.durationPrint}})</p>
         <p class="btn btn-default" ng-click="updateFilter(selectedTravel,2)"><i class="glyphicon glyphicon glyphicon-globe"></i> Trop d'escales</p>
     </div>  
-<div class="row well h5" style="padding:5px; text-align:center; margin:5px; ">Aller : <span class="h6 ng-binding">{{selectedTravel.outwardTakeOffDate | date:'HH:mm'}} - {{selectedTravel.outwardLandDate | date:'HH:mm'}}</span></div>
-    <div class="btn-group btn-group-justified">
+    
+    <div  class="table-responsive"><table class="table table-no-margin"><thead><tr><th>
+        Aller : <span class="h6 ng-binding">{{selectedTravel.outwardTakeOffDate | date:'HH:mm'}} - {{selectedTravel.outwardLandDate | date:'HH:mm'}}</span>
+    </th></tr></thead></table></div>
+    
+    <div class="btn-group btn-group-justified" style="margin-top:4px;">
     <p class="btn btn-default" ng-click="updateFilter(selectedTravel,3)" ng-hide="selectedTravel.hide[3]"><i class="glyphicon glyphicon-time"></i> Trop tôt ({{selectedTravel.outwardTakeOffDate | date:'HH:mm'}})</p>
     <p class="btn btn-info" ng-click="updateFilter(selectedTravel,3)" ng-hide="!selectedTravel.hide[3]"><i class="glyphicon glyphicon-time"></i> Trop tôt ({{selectedTravel.outwardTakeOffDate | date:'HH:mm'}})</p>
     <p class="btn btn-default" ng-click="updateFilter(selectedTravel,4)" ng-hide="selectedTravel.hide[4]"><i class="glyphicon glyphicon-time"></i> Trop tard ({{selectedTravel.outwardTakeOffDate | date:'HH:mm'}})</p>
     <p class="btn btn-info" ng-click="updateFilter(selectedTravel,4)" ng-hide="!selectedTravel.hide[4]"><i class="glyphicon glyphicon-time"></i> Trop tard ({{selectedTravel.outwardTakeOffDate | date:'HH:mm'}})</p>
     </div>
-<div class="row well h5" style="padding:5px; text-align:center; margin:5px; ">Retour : <span class="h6 ng-binding">{{selectedTravel.inwardTakeOffDate | date:'HH:mm'}} - {{selectedTravel.outwardLandDate | date:'HH:mm'}}</span></div>
-    <div class="btn-group btn-group-justified">
+    
+    <div  class="table-responsive"><table class="table table-no-margin"><thead><tr><th>
+        Retour : <span class="h6 ng-binding">{{selectedTravel.inwardTakeOffDate | date:'HH:mm'}} - {{selectedTravel.outwardLandDate | date:'HH:mm'}}</span>
+    </th></tr></thead></table></div>
+    
+
+    <div class="btn-group btn-group-justified" style="margin-top:4px;">
     <p class="btn btn-default" ng-click="updateFilter(selectedTravel,5)" ng-hide="selectedTravel.hide[5]"><i class="glyphicon glyphicon-time"></i> Trop tôt ({{selectedTravel.inwardTakeOffDate | date:'HH:mm'}})</p>
     <p class="btn btn-info" ng-click="updateFilter(selectedTravel,5)" ng-hide="!selectedTravel.hide[5]"><i class="glyphicon glyphicon-time"></i> Trop tôt ({{selectedTravel.inwardTakeOffDate | date:'HH:mm'}})</p>
     <p class="btn btn-default" ng-click="updateFilter(selectedTravel,6)" ng-hide="selectedTravel.hide[6]"><i class="glyphicon glyphicon-time"></i> Trop tard ({{selectedTravel.inwardTakeOffDate | date:'HH:mm'}})</p>
@@ -28,7 +41,7 @@
 
 </div>
     <div ng-hide="!selectedTravel.hide[7]">
-        <p class="btn btn-default btn-block" ng-click="updateFilter(selectedTravel,0)"> Annulez la suppression et le filtre</p>
+        <p class="btn btn-default btn-block" ng-click="updateFilter(selectedTravel,0)" style="font-weight:bold;"> Annulez la suppression et le filtre</p>
     </div>
     
 </div>

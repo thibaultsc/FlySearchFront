@@ -2,44 +2,7 @@
 
 
 <div class="row">
-    <div class="col-lg-3">
-        <div class="travel-box travel-box-false" ng-hide="false">
-            <div class="btn btn-default" ng-click="refreshFlySearchData()">Refresh</div>
-            <p> Filtres</p>
-            <div class="checkbox">
-                <label style="display:block;">
-                    <input type="checkbox" ng-model="filter.direct" ng-change="filterFlySearchTravels()"> Direct
-                </label>
-                <label style="display:block;">
-                    <input type="checkbox" ng-model="filter.escale" ng-change="escaleCheckBoxChange()"> 1 Escale
-                </label> 
-                <label style="display:block;">
-                    <input type="checkbox" ng-model="filter.escales" ng-change="filterFlySearchTravels()"> 2 Escales
-                </label> 
-            </div>
-            <div class="col-lg-12" style="height:20px;">
-                <canvas id="bar" class="chart chart-bar"
-                    chart-data="data" chart-labels="labels" chart-options="options" height="70">
-                </canvas>
-            </div>
-            <div style="padding-left:20px;padding-right:15px; position:relative;">
-                <input type="range" min="{{flySearch.minDuration}}" max="{{flySearch.maxDuration}}" ng-change="filterFlySearchTravels()" ng-model="filter.duration">
-            </div>
-            <span>Entre {{flySearch.minDuration |date: 'HH': 'UTC'}}h{{flySearch.minDuration |date: 'mm': 'UTC'}}m et {{filter.duration |date: 'HH': 'UTC'}}h{{filter.duration |date: 'mm': 'UTC'}}m </span>
-            
-             <div class="sliderExample">
-                 Horaire départ aller
-                <div ui-slider="{range: true}" min="0" max="{{filter.maxTiming}}" step="0.01" use-decimals ng-model="filter.outwardTiming" ng-change="filterFlySearchTravels()"></div>
-                 Entre {{outwardNextDay[0]}}{{filter.outwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{outwardNextDay[1]}}{{filter.outwardTiming[1]|date :'HH:mm' : 'UTC'}}
-            </div>
-             <div class="sliderExample">
-                 Horaire départ retour
-                <div ui-slider="{range: true}" min="0" max="{{filter.maxTiming}}" step="0.01" use-decimals ng-model="filter.inwardTiming" ng-change="filterFlySearchTravels()"></div>
-                 Entre {{inwardNextDay[0]}}{{filter.inwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{inwardNextDay[1]}}{{filter.inwardTiming[1]|date :'HH:mm' : 'UTC'}}
-            </div>
-        </div>
-        
-    </div>
+    <div ng-include="'views/results/filterBox.html'"></div>
     <div>
         <!-- Right Column -->
         <div class="col-lg-4 col-lg-push-5"> 
@@ -54,7 +17,7 @@
             <div ng-include="'views/results/comparisonBox.html'"></div>
             <!-- Results list -->
             <div class="row">
-                <div class="travel-div" ng-repeat="travel in travelData | filter: { showTravel: true } | orderBy: 'minPrice'" ng-mouseover="showBtnsFunction(travel)" ng-mouseleave="hideBtnsFunction(travel)">
+                <div class="travel-div animate-repeat" ng-repeat="travel in travelData | filter: { showTravel: true } | orderBy: 'minPrice'" ng-mouseover="showBtnsFunction(travel)" ng-mouseleave="hideBtnsFunction(travel)">
                     <div ng-include="'views/results/travelBox.html'"></div>
                 </div>
             </div>

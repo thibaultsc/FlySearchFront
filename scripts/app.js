@@ -13,7 +13,8 @@ var flyWkApp = angular
                         'ui.select',
                         'restangular',
                         'chart.js',
-        'ui.slider'
+        'ui.slider',
+        'ngAnimate'
     ])
 ;
 

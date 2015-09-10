@@ -1,0 +1,60 @@
+    <div class="col-lg-3">
+        <div class="travel-box travel-box-false" ng-hide="false" style="padding:10px;">
+            <div class="btn btn-default" ng-hide="true" ng-click="refreshFlySearchData()">Refresh</div>
+            <div class="well h4"> Filtres</div>
+            
+            <div  class="table-responsive"><table class="table table-no-margin"><thead><tr><th>
+                Vols supprimés individuelement
+            </th></tr></thead></table></div>
+            
+            <div class="btn btn-default btn-block no-border" ng-click="cancelRemove()">Annulez les suppressions</div>
+            
+            <div  class="table-responsive"><table class="table table-no-margin"><thead><tr><th>
+                Types de vols
+            </th></tr></thead></table></div>
+            
+            <div class="checkbox">
+                <label style="display:block;">
+                    <input type="checkbox" ng-model="filter.direct" ng-change="filterFlySearchTravels()"> Direct
+                </label>
+                <label style="display:block;">
+                    <input type="checkbox" ng-model="filter.escale" ng-change="escaleCheckBoxChange()"> 1 Escale
+                </label> 
+                <label style="display:block;">
+                    <input type="checkbox" ng-model="filter.escales" ng-change="filterFlySearchTravels()"> 2 Escales
+                </label> 
+            </div>
+            
+            <div  class="table-responsive"><table class="table table-no-margin"><thead><tr><th>
+                Durée
+            </th></tr></thead></table></div>
+            
+            
+            <div class="col-lg-12" style="height:20px;">
+                <canvas id="bar" class="chart chart-bar"
+                    chart-data="data" chart-labels="labels" chart-options="options" height="70">
+                </canvas>
+            </div>
+            <div style="padding-left:20px;padding-right:15px; position:relative;">
+                <input type="range" min="{{flySearch.minDuration}}" max="{{flySearch.maxDuration}}" ng-change="filterFlySearchTravels()" ng-model="filter.duration">
+            </div>
+            <span class="h6" style="font-style:italic; margin:4px; margin-left:15px;">     entre {{flySearch.minDuration |date: 'HH': 'UTC'}}h{{flySearch.minDuration |date: 'mm': 'UTC'}}m et {{filter.duration |date: 'HH': 'UTC'}}h{{filter.duration |date: 'mm': 'UTC'}}m  </span>
+            
+            
+            <div  class="table-responsive"><table class="table table-no-margin"><thead><tr><th>
+                Horaires du départ
+            </th></tr></thead></table></div>
+            
+             <div class="sliderExample">
+                 Vol aller
+                <div ui-slider="{range: true}" min="0" max="{{filter.maxTiming}}" step="0.01" use-decimals ng-model="filter.outwardTiming" ng-change="filterFlySearchTravels()"></div>
+                 Entre {{outwardNextDay[0]}}{{filter.outwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{outwardNextDay[1]}}{{filter.outwardTiming[1]|date :'HH:mm' : 'UTC'}}
+            </div>
+             <div class="sliderExample">
+                 Vol retour
+                <div ui-slider="{range: true}" min="0" max="{{filter.maxTiming}}" step="0.01" use-decimals ng-model="filter.inwardTiming" ng-change="filterFlySearchTravels()"></div>
+                 Entre {{inwardNextDay[0]}}{{filter.inwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{inwardNextDay[1]}}{{filter.inwardTiming[1]|date :'HH:mm' : 'UTC'}}
+            </div>
+        </div>
+        
+    </div>

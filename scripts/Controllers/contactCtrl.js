@@ -117,7 +117,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                                     //console.log($scope.flySearch.minDuration);
                                 }
                                 if (travel.duration > $scope.flySearch.maxDuration) {
-                                    $scope.flySearch.maxDuration = travel.duration;
+                                    $scope.flySearch.maxDuration = travel.duration + 1;
                                     //console.log($scope.flySearch.maxDuration);
                                 }
                                 
@@ -152,7 +152,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                         })
                     }
                 })
-                 $scope.filter.duration = $scope.flySearch.maxDuration.toString();
+                 $scope.filter.duration = ($scope.flySearch.maxDuration);
                  $scope.filterFlySearchTravels();
                 //$scope.updateTravelData();
             });
@@ -182,7 +182,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         
         
         $scope.filterFlySearchTravels = function () {
-            $scope.travelData =[];
+            //$scope.travelData =[];
             $scope.outwardNextDay = ["",""];
             $scope.inwardNextDay = ["",""];
             $scope.flySearch.dataDuration = [0,0,0,0,0,0,0,0,0,0];
@@ -261,8 +261,11 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                             subFlySearch.durationMinPrice = Math.max (travel.inwardDuration, travel.outwardDuration);
                         }
                     }
-                    $scope.travelData.push(travel);
-                    
+                    if ($scope.travelData.indexOf(travel) == -1) {
+                        console.log("rer");
+                         $scope.travelData.push(travel);
+                    }
+                    //$scope.travelData.push(travel);
                 })
             })
             $scope.updateTravelData();
@@ -560,5 +563,21 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         };
         
         $scope.refreshFlySearchData();
+        
+        
+        
+        //Filter Functions
+        $scope.cancelRemove = function () {
+            angular.forEach($scope.flySearch.subFlySearches,function(subFlySearch) {
+                angular.forEach(subFlySearch.travels,function(travel) {
+                    travel.hide[0] = false;
+                })
+            })
+            $scope.filterFlySearchTravels();
+            $scope.showHideInfoBool = false;
+        }
+        
+        
+        
     }
 ]);
