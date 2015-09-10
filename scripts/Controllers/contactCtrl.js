@@ -159,15 +159,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         };
         //Make sure that 2 stops gets uncheck when you uncheck 1 stop
         
-        
-        $scope.escaleCheckBoxChange = function () {
-            if ( $scope.filter.escale == false && $scope.filter.direct == true)
-            {
-                $scope.filter.escales = false;
-            }
-            $scope.filterFlySearchTravels();
-        }
-        
+
         
         $scope.filter = {
             direct : true,
@@ -176,13 +168,18 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             duration : "1000",
             maxTiming : 172799999,
             outwardTiming: [0, 86400000-1],
-            inwardTiming : [0, 86400000-1]
+            inwardTiming : [0, 86400000-1],
+            hideTravel: []
         }
-
+        $scope.oldFilter= [];
+        $scope.oldFilter.push(angular.copy($scope.filter));
         
         
         $scope.filterFlySearchTravels = function () {
             //$scope.travelData =[];
+            
+            $scope.filterHistory();            
+            
             $scope.outwardNextDay = ["",""];
             $scope.inwardNextDay = ["",""];
             $scope.flySearch.dataDuration = [0,0,0,0,0,0,0,0,0,0];
@@ -190,7 +187,6 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                 subFlySearch.minPrice = 1000000;
                 subFlySearch.durationMinPrice = "";
                 angular.forEach(subFlySearch.travels,function(travel) {
-
                     //Filtre sur vol Direct / 1 Escale / 2 Escales
                     if (travel.inwardTypeValue == 1 && travel.outwardTypeValue == 1) {
                         travel.showTravel = $scope.filter.direct;
@@ -262,7 +258,6 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
                         }
                     }
                     if ($scope.travelData.indexOf(travel) == -1) {
-                        console.log("rer");
                          $scope.travelData.push(travel);
                     }
                     //$scope.travelData.push(travel);
@@ -270,95 +265,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             })
             $scope.updateTravelData();
         }
-        $scope.updateFilter = function (travel, a) {
-            //usine a gaz simplifiable si on garde dans la situation existante
-            switch (a) {
-                    
-                case 0:
-                    $scope.showHideInfoBool = false;
-                    $scope.filter.duration = $scope.oldFilter.duration;
-                    $scope.filter.outwardTiming[0] = $scope.oldFilter.outwardTiming[0];
-                    $scope.filter.outwardTiming[1] = $scope.oldFilter.outwardTiming[1];
-                    $scope.filter.inwardTiming[0] = $scope.oldFilter.inwardTiming[0];
-                    $scope.filter.inwardTiming[1] = $scope.oldFilter.inwardTiming[1];
-                    
-                    travel.hide[0] = !travel.hide[0];
-                    travel.hide[7] = !travel.hide[7];
-                    travel.hide[1] = false;
-                    travel.hide[2] = false;
-                    travel.hide[3] = false;
-                    travel.hide[4] = false;
-                    travel.hide[5] = false;
-                    travel.hide[6] = false;
-                case -1:
-                    $scope.showHideInfoBool = false;
-                    travel.hide[7] = !travel.hide[7];
-                    travel.hide[0] = !travel.hide[0];
-                    break;
-                case 1:
-                    if (!travel.hide[a]) {
-                        $scope.filter.duration = travel.duration - 1;
-                    }
-                    else
-                    {
-                        $scope.filter.duration = $scope.oldFilter.duration;
-                    }
-                    break;
-                case 2:
-                    if (!travel.hide[a]) {
-                        $scope.filter.outwardTiming[0] = moment(travel.outwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].departureDate)+1;
-                    }
-                    else
-                    {
-                        $scope.filter.outwardTiming[0] = $scope.oldFilter.outwardTiming[0];
-                    }
-                    break;
-                case 3:
-                    if (!travel.hide[a]) {
-                        $scope.filter.outwardTiming[0] = moment(travel.outwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].departureDate)+1;
-                    }
-                    else
-                    {
-                        $scope.filter.outwardTiming[0] = $scope.oldFilter.outwardTiming[0];
-                    }
-                    break;
-                case 4:
-                    if (!travel.hide[a]) {
-                        $scope.filter.outwardTiming[1] = moment(travel.outwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].departureDate)-1;
-                    }
-                    else
-                    {
-                        $scope.filter.outwardTiming[1] = $scope.oldFilter.outwardTiming[1];
-                    }
-                    
-                    break;
-                case 5:
-                    if (!travel.hide[a]) {
-                        $scope.filter.inwardTiming[0] = moment(travel.inwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].arrivalDate)+1;
-                    }
-                    else
-                    {
-                        $scope.filter.inwardTiming[0] = $scope.oldFilter.inwardTiming[0];
-                    }
-                    
-                    break;
-                case 6:
-                    if (!travel.hide[a]) {
-                        $scope.filter.inwardTiming[1] = moment(travel.inwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].arrivalDate)-1;
-                    }
-                    else
-                    {
-                        $scope.filter.inwardTiming[1] = $scope.oldFilter.inwardTiming[1];
-                    }
-                    
-                    break;
-            }
-            travel.hide[a] = !travel.hide[a];
-            travel.hide[7] = !travel.hide[7];
-            
-            $scope.filterFlySearchTravels();
-            
-        }
+        
         
         $scope.getNumber = function(num) {
             var Table =[];  
@@ -479,59 +386,7 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             }
         }
         
-        $scope.showDetailsFunction = function (travel,$event) {
-            if (travel.id !== $scope.selectedTravel.id) {
-                //Decrease the size of the previous selected travel box
-                $scope.increaseBox[$scope.selectedTravel.id] = false;
-            }
-            //Show the details box
-            $scope.showDetailsBool = true;
 
-            if ($event !== undefined) {
-                //Get back the vertical offset of the selected travel to align the details travel box
-                $scope.showDetailsOffset = angular.element($event.currentTarget).prop('offsetParent').offsetTop;
-            }
-            //increase the size of the travel box
-            $scope.increaseBox[travel.id] = true;
-            //update the new selectedTravel value
-            $scope.selectedTravel = travel;
-        }
-        
-        $scope.showHideProposition = function (travel,$event) {
-            
-            $scope.hideDetailsFunction();
-            
-            if ($event !== undefined) {
-                //Get back the vertical offset of the selected travel to align the details travel box
-                $scope.showHideInfoOffset = angular.element($event.currentTarget).prop('offsetParent').offsetTop;
-            }
-            
-            //update the new selectedTravel value
-            travel.hide[0] = true;
-            $scope.selectedTravel = travel;
-            $scope.showHideInfoBool = true;
-            $scope.filterFlySearchTravels();
-            $scope.oldFilter = angular.copy($scope.filter);
-            
-        } 
-        
-        $scope.showBtnsFunction = function (travel) {
-            //console.log(travel['@id']);
-            travel.showBtnsBool = true;
-            //id = travel['@id'].substring(travel['@id'].lastIndexOf("/")+1,  travel['@id'].length);
-            //console.log(travel.id);
-            //$scope.showBtnsBool[travel.id] = true;
-        }
-        
-        $scope.hideBtnsFunction = function (travel) {
-            //$scope.showBtnsBool[travel.id] = false;
-            travel.showBtnsBool = false;
-        }
-        
-        $scope.hideDetailsFunction = function () {
-            $scope.showDetailsBool = false;
-            $scope.increaseBox[$scope.selectedTravel.id] = false;
-        }
         
         $scope.orderByFunction = function(input, attribute) {
             if (!angular.isObject(input)) return input;
@@ -540,7 +395,6 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             for(var objectKey in input) {
                 array.push(input[objectKey]);
             }
-
             array.sort(function(a, b){
                 a = parseInt(a[attribute]);
                 b = parseInt(b[attribute]);
@@ -564,9 +418,51 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
         
         $scope.refreshFlySearchData();
         
+        //Filter functions
         
+        $scope.filterHistory = function () {
+            var length = $scope.oldFilter.length -1;
+            if ($scope.filter.duration !== $scope.oldFilter[length].duration) {
+                console.log("pb1");
+                if ($scope.lastFilterType == "duration") {
+                    $scope.oldFilter[length].duration = $scope.filter.duration;
+                }
+                else
+                {
+                    $scope.oldFilter.push(angular.copy($scope.filter));
+                    $scope.lastFilterType = "duration"
+                }
+            }
+            else
+            {
+                if ($scope.filter.inwardTiming[0] !== $scope.oldFilter[length].inwardTiming[0] || $scope.filter.inwardTiming[1] !== $scope.oldFilter[length].inwardTiming[1] || $scope.filter.outwardTiming[0] !== $scope.oldFilter[length].outwardTiming[0] || $scope.filter.outwardTiming[1] !== $scope.oldFilter[length].outwardTiming[1] ) {
+                   console.log("pb2");
+                    if ($scope.lastFilterType == "timing") {
+                        $scope.oldFilter[length].inwardTiming = $scope.filter.inwardTiming;
+                        $scope.oldFilter[length].outwardTiming = $scope.filter.outwardTiming;
+                    }
+                    else
+                    {
+                        $scope.oldFilter.push(angular.copy($scope.filter));
+                        $scope.lastFilterType = "timing"
+                    }
+                }
+                else
+                {
+                                    console.log("pb3?");
+                    //Log for each of the hide travel
+                     if ($scope.filter.hideTravel.length !== $scope.oldFilter[length].hideTravel.length) {
+                         console.log("passage");
+                        $scope.oldFilter.push(angular.copy($scope.filter));
+                        $scope.lastFilterType = "hide travel"
+                    }
+                }
+            }
+            console.log($scope.oldFilter);
+        }
         
-        //Filter Functions
+        //FilterBox Functions
+        $scope.lastFilterType = "hide travel";
         $scope.cancelRemove = function () {
             angular.forEach($scope.flySearch.subFlySearches,function(subFlySearch) {
                 angular.forEach(subFlySearch.travels,function(travel) {
@@ -576,8 +472,165 @@ flyWkAppControllers.controller('contactCtrl', ['$scope', '$http', 'Restangular',
             $scope.filterFlySearchTravels();
             $scope.showHideInfoBool = false;
         }
+        $scope.escaleCheckBoxChange = function () {
+            if ( $scope.filter.escale == false && $scope.filter.direct == true)
+            {
+                $scope.filter.escales = false;
+            }
+            $scope.filterFlySearchTravels();
+        }
         
         
+        
+        //HideBox Function
+        $scope.updateFilter = function (travel, a) {
+            //usine a gaz simplifiable si on garde dans la situation existante
+            var length = $scope.oldFilter.length -1;
+            switch (a) {
+                case 0:
+                    $scope.showHideBoxBool = false;
+                    $scope.filter.duration = $scope.oldFilter[length].duration;
+                    $scope.filter.outwardTiming[0] = $scope.oldFilter[length].outwardTiming[0];
+                    $scope.filter.outwardTiming[1] = $scope.oldFilter[length].outwardTiming[1];
+                    $scope.filter.inwardTiming[0] = $scope.oldFilter[length].inwardTiming[0];
+                    $scope.filter.inwardTiming[1] = $scope.oldFilter[length].inwardTiming[1];
+                    
+                    travel.hide[0] = !travel.hide[0];
+                    $scope.filter.hideTravel.splice($scope.filter.hideTravel.indexOf(travel['@id']));
+                    
+                    travel.hide[7] = !travel.hide[7];
+                    travel.hide[1] = false;
+                    travel.hide[2] = false;
+                    travel.hide[3] = false;
+                    travel.hide[4] = false;
+                    travel.hide[5] = false;
+                    travel.hide[6] = false;
+                case -1:
+                    $scope.showHideBoxBool = false;
+                    travel.hide[7] = !travel.hide[7];
+                    travel.hide[0] = !travel.hide[0];
+                    $scope.filter.hideTravel.splice($scope.filter.hideTravel.indexOf(travel['@id']));
+                    break;
+                case 1:
+                    if (!travel.hide[a]) {
+                        $scope.filter.duration = travel.duration - 1;
+                    }
+                    else
+                    {
+                        $scope.filter.duration = $scope.oldFilter[length].duration;
+                    }
+                    break;
+                case 2:
+                    if (!travel.hide[a]) {
+                        $scope.filter.outwardTiming[0] = moment(travel.outwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].departureDate)+1;
+                    }
+                    else
+                    {
+                        $scope.filter.outwardTiming[0] = $scope.oldFilter[length].outwardTiming[0];
+                    }
+                    break;
+                case 3:
+                    if (!travel.hide[a]) {
+                        $scope.filter.outwardTiming[0] = moment(travel.outwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].departureDate)+1;
+                    }
+                    else
+                    {
+                        $scope.filter.outwardTiming[0] = $scope.oldFilter[length].outwardTiming[0];
+                    }
+                    break;
+                case 4:
+                    if (!travel.hide[a]) {
+                        $scope.filter.outwardTiming[1] = moment(travel.outwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].departureDate)-1;
+                    }
+                    else
+                    {
+                        $scope.filter.outwardTiming[1] = $scope.oldFilter[length].outwardTiming[1];
+                    }
+                    
+                    break;
+                case 5:
+                    if (!travel.hide[a]) {
+                        $scope.filter.inwardTiming[0] = moment(travel.inwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].arrivalDate)+1;
+                    }
+                    else
+                    {
+                        $scope.filter.inwardTiming[0] = $scope.oldFilter[length].inwardTiming[0];
+                    }
+                    
+                    break;
+                case 6:
+                    if (!travel.hide[a]) {
+                        $scope.filter.inwardTiming[1] = moment(travel.inwardTakeOffDate).diff($scope.flySearch.subFlySearches[travel.subFlySearchParent-1].arrivalDate)-1;
+                    }
+                    else
+                    {
+                        $scope.filter.inwardTiming[1] = $scope.oldFilter[length].inwardTiming[1];
+                    }
+                    
+                    break;
+            }
+            travel.hide[a] = !travel.hide[a];
+            travel.hide[7] = !travel.hide[7];
+            
+            $scope.filterFlySearchTravels();
+            
+        }
+        
+        //Display HTML functions
+        
+        $scope.showDetailsFunction = function (travel,$event) {
+            $scope.hideHideBox();
+            if (travel.id !== $scope.selectedTravel.id) {
+                //Decrease the size of the previous selected travel box
+                $scope.increaseBox[$scope.selectedTravel.id] = false;
+            }
+            //Show the details box
+            $scope.showDetailsBool = true;
+
+            if ($event !== undefined) {
+                //Get back the vertical offset of the selected travel to align the details travel box
+                $scope.showDetailsOffset = angular.element($event.currentTarget).prop('offsetParent').offsetTop;
+            }
+            //increase the size of the travel box
+            $scope.increaseBox[travel.id] = true;
+            //update the new selectedTravel value
+            $scope.selectedTravel = travel;
+        }
+        $scope.showHideBox = function (travel,$event) {
+            $scope.hideDetailsFunction();
+            if ($event !== undefined) {
+                $scope.showHideInfoOffset = angular.element($event.currentTarget).prop('offsetParent').offsetTop;
+                if ($scope.showHideInfoOffset < 100) {
+                    $scope.showHideInfoOffset = $scope.showDetailsOffset;
+                }
+            }
+            //remove record
+            travel.hide[0] = true;
+            $scope.filter.hideTravel.push(travel['@id']);
+            //show the box
+            $scope.showHideBoxBool = true;
+            $scope.selectedTravel = travel;
+            $scope.filterFlySearchTravels();
+            //$scope.oldFilter = angular.copy($scope.filter);
+        } 
+        $scope.showBtnsFunction = function (travel) {
+            //console.log(travel['@id']);
+            travel.showBtnsBool = true;
+            //id = travel['@id'].substring(travel['@id'].lastIndexOf("/")+1,  travel['@id'].length);
+            //console.log(travel.id);
+            //$scope.showBtnsBool[travel.id] = true;
+        }
+        $scope.hideBtnsFunction = function (travel) {
+            //$scope.showBtnsBool[travel.id] = false;
+            travel.showBtnsBool = false;
+        }
+        $scope.hideDetailsFunction = function () {
+            $scope.showDetailsBool = false;
+            $scope.increaseBox[$scope.selectedTravel.id] = false;
+        }
+        $scope.hideHideBox = function () {
+            $scope.showHideBoxBool = false;
+        }
         
     }
 ]);

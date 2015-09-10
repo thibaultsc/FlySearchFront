@@ -41,6 +41,7 @@
             <span class="h6" style="font-style:italic; margin:4px; margin-left:15px;">     entre {{flySearch.minDuration |date: 'HH': 'UTC'}}h{{flySearch.minDuration |date: 'mm': 'UTC'}}m et {{filter.duration |date: 'HH': 'UTC'}}h{{filter.duration |date: 'mm': 'UTC'}}m  </span>
             
             
+            
             <div  class="table-responsive"><table class="table table-no-margin"><thead><tr><th>
                 Horaires du départ
             </th></tr></thead></table></div>
@@ -48,12 +49,14 @@
              <div class="sliderExample">
                  Vol aller
                 <div ui-slider="{range: true}" min="0" max="{{filter.maxTiming}}" step="0.01" use-decimals ng-model="filter.outwardTiming" ng-change="filterFlySearchTravels()"></div>
-                 Entre {{outwardNextDay[0]}}{{filter.outwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{outwardNextDay[1]}}{{filter.outwardTiming[1]|date :'HH:mm' : 'UTC'}}
+                 <span class="h6" style="font-style:italic; margin:4px; margin-left:15px;">entre {{outwardNextDay[0]}}{{filter.outwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{outwardNextDay[1]}}{{filter.outwardTiming[1]|date :'HH:mm' : 'UTC'}}</span>
+                 
             </div>
              <div class="sliderExample">
                  Vol retour
                 <div ui-slider="{range: true}" min="0" max="{{filter.maxTiming}}" step="0.01" use-decimals ng-model="filter.inwardTiming" ng-change="filterFlySearchTravels()"></div>
-                 Entre {{inwardNextDay[0]}}{{filter.inwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{inwardNextDay[1]}}{{filter.inwardTiming[1]|date :'HH:mm' : 'UTC'}}
+                <span class="h6" style="font-style:italic; margin:4px; margin-left:15px;">entre {{inwardNextDay[0]}}{{filter.inwardTiming[0] |date :'HH:mm' : 'UTC'}} et {{inwardNextDay[1]}}{{filter.inwardTiming[1]|date :'HH:mm' : 'UTC'}}</span>
+                 
             </div>
         </div>
         
