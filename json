@@ -1,0 +1,651 @@
+{
+    "@context": "/flyback/web/app_dev.php/api/contexts/FlySearch",
+    "@id": "/flyback/web/app_dev.php/api/fly_searches/5",
+    "@type": "FlySearch",
+    "subFlySearches": [
+        {
+            "@id": "/flyback/web/app_dev.php/api/sub_fly_searches/8",
+            "@type": "SubFlySearch",
+            "departure": {
+                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                "@type": "Airport",
+                "name": "Paris",
+                "code": "PAR"
+            },
+            "arrival": {
+                "@id": "/flyback/web/app_dev.php/api/airports/4",
+                "@type": "Airport",
+                "name": "New York",
+                "code": "NYC"
+            },
+            "departureDate": "2015-12-20T00:00:00.000+01:00",
+            "arrivalDate": "2015-12-27T00:00:00.000+01:00",
+            "travels": [
+                {
+                    "@id": "/flyback/web/app_dev.php/api/travels/1",
+                    "@type": "Travel",
+                    "flights": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/15",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 1,
+                            "takeOffDate": "2015-12-20T23:00:00+01:00",
+                            "landDate": "2015-12-21T06:00:00+01:00",
+                            "airline": "Air France",
+                            "flightNumber": "AF061",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/4",
+                                "@type": "Airport",
+                                "name": "New York",
+                                "code": "NYC"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/21",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-27T11:00:00+01:00",
+                            "landDate": "2015-12-27T23:00:00+01:00",
+                            "airline": "Air France",
+                            "flightNumber": "AF062",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/4",
+                                "@type": "Airport",
+                                "name": "New York",
+                                "code": "NYC"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            }
+                        }
+                    ],
+                    "prices": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/prices/1",
+                            "@type": "Price",
+                            "price": 200,
+                            "agency": "Opodo",
+                            "url": "http://"
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/prices/5",
+                            "@type": "Price",
+                            "price": 198,
+                            "agency": "BravoFly",
+                            "url": "hb,"
+                        }
+                    ]
+                },
+                {
+                    "@id": "/flyback/web/app_dev.php/api/travels/2",
+                    "@type": "Travel",
+                    "flights": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/24",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 1,
+                            "takeOffDate": "2015-12-20T23:00:00+01:00",
+                            "landDate": "2015-12-21T02:00:00+01:00",
+                            "airline": "British Airways",
+                            "flightNumber": "BT098",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/2",
+                                "@type": "Airport",
+                                "name": "Londres",
+                                "code": "LON"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/25",
+                            "@type": "Flight",
+                            "indice": 2,
+                            "wayType": 1,
+                            "takeOffDate": "2015-12-21T03:00:00+01:00",
+                            "landDate": "2015-12-21T13:00:00+01:00",
+                            "airline": "British Airways",
+                            "flightNumber": "BT876",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/2",
+                                "@type": "Airport",
+                                "name": "Londres",
+                                "code": "LON"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/4",
+                                "@type": "Airport",
+                                "name": "New York",
+                                "code": "NYC"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/26",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-27T01:00:00+01:00",
+                            "landDate": "2015-12-27T11:00:00+01:00",
+                            "airline": "Easyjet",
+                            "flightNumber": "EY768",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/4",
+                                "@type": "Airport",
+                                "name": "New York",
+                                "code": "NYC"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/27",
+                            "@type": "Flight",
+                            "indice": 2,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-27T16:00:00+01:00",
+                            "landDate": "2015-12-27T21:00:00+01:00",
+                            "airline": "Ryanair",
+                            "flightNumber": "RY789",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            }
+                        }
+                    ],
+                    "prices": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/prices/2",
+                            "@type": "Price",
+                            "price": 778,
+                            "agency": "Go Voyages",
+                            "url": "fghdj"
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/prices/6",
+                            "@type": "Price",
+                            "price": 876,
+                            "agency": "Opodo",
+                            "url": "dhj"
+                        }
+                    ]
+                },
+                {
+                    "@id": "/flyback/web/app_dev.php/api/travels/3",
+                    "@type": "Travel",
+                    "flights": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/28",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 1,
+                            "takeOffDate": "2015-12-20T03:00:00+01:00",
+                            "landDate": "2015-12-20T07:00:00+01:00",
+                            "airline": "Air France",
+                            "flightNumber": "RY789",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/2",
+                                "@type": "Airport",
+                                "name": "Londres",
+                                "code": "LON"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/29",
+                            "@type": "Flight",
+                            "indice": 2,
+                            "wayType": 1,
+                            "takeOffDate": "2015-12-20T09:12:00+01:00",
+                            "landDate": "2015-12-20T12:11:00+01:00",
+                            "airline": "Easyjet",
+                            "flightNumber": "RY789",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/2",
+                                "@type": "Airport",
+                                "name": "Londres",
+                                "code": "LON"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/30",
+                            "@type": "Flight",
+                            "indice": 3,
+                            "wayType": 1,
+                            "takeOffDate": "2015-12-20T23:00:00+01:00",
+                            "landDate": "2015-12-20T23:11:00+01:00",
+                            "airline": "British Airways",
+                            "flightNumber": "RY789",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/4",
+                                "@type": "Airport",
+                                "name": "New York",
+                                "code": "NYC"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/31",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-27T01:30:00+01:00",
+                            "landDate": "2015-12-27T02:40:00+01:00",
+                            "airline": "British Airways",
+                            "flightNumber": "RY789",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/4",
+                                "@type": "Airport",
+                                "name": "New York",
+                                "code": "NYC"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/32",
+                            "@type": "Flight",
+                            "indice": 2,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-27T06:50:00+01:00",
+                            "landDate": "2015-12-28T01:00:00+01:00",
+                            "airline": "Easyjet",
+                            "flightNumber": "RY789",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/2",
+                                "@type": "Airport",
+                                "name": "Londres",
+                                "code": "LON"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/33",
+                            "@type": "Flight",
+                            "indice": 3,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-28T01:10:00+01:00",
+                            "landDate": "2015-12-28T10:00:00+01:00",
+                            "airline": "Air France",
+                            "flightNumber": "RY789",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/2",
+                                "@type": "Airport",
+                                "name": "Londres",
+                                "code": "LON"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            }
+                        }
+                    ],
+                    "prices": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/prices/3",
+                            "@type": "Price",
+                            "price": 56,
+                            "agency": "BravoFly",
+                            "url": "gfdh"
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/prices/4",
+                            "@type": "Price",
+                            "price": 58,
+                            "agency": "Go Voyages",
+                            "url": "http://"
+                        }
+                    ]
+                },
+                {
+                    "@id": "/flyback/web/app_dev.php/api/travels/6",
+                    "@type": "Travel",
+                    "flights": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/42",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 1,
+                            "takeOffDate": "2015-12-20T08:15:00+01:00",
+                            "landDate": "2015-12-20T18:00:00+01:00",
+                            "airline": "Air France",
+                            "flightNumber": "AF566",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/4",
+                                "@type": "Airport",
+                                "name": "New York",
+                                "code": "NYC"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/43",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-28T09:00:00+01:00",
+                            "landDate": "2015-12-28T23:00:00+01:00",
+                            "airline": "Air France",
+                            "flightNumber": "AF567",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/4",
+                                "@type": "Airport",
+                                "name": "New York",
+                                "code": "NYC"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            }
+                        }
+                    ],
+                    "prices": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/prices/10",
+                            "@type": "Price",
+                            "price": 12,
+                            "agency": "Arnaque",
+                            "url": "hfjsk"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "/flyback/web/app_dev.php/api/sub_fly_searches/9",
+            "@type": "SubFlySearch",
+            "departure": {
+                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                "@type": "Airport",
+                "name": "Paris",
+                "code": "PAR"
+            },
+            "arrival": {
+                "@id": "/flyback/web/app_dev.php/api/airports/2",
+                "@type": "Airport",
+                "name": "Londres",
+                "code": "LON"
+            },
+            "departureDate": "2015-12-20T00:00:00.000+01:00",
+            "arrivalDate": "2015-12-27T00:00:00.000+01:00",
+            "travels": [
+                {
+                    "@id": "/flyback/web/app_dev.php/api/travels/4",
+                    "@type": "Travel",
+                    "flights": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/34",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 1,
+                            "takeOffDate": "2015-12-20T10:25:00+01:00",
+                            "landDate": "2015-12-20T11:25:00+01:00",
+                            "airline": "Lufthansa",
+                            "flightNumber": "LF789",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/2",
+                                "@type": "Airport",
+                                "name": "Londres",
+                                "code": "LON"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/36",
+                            "@type": "Flight",
+                            "indice": 2,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-27T20:50:00+01:00",
+                            "landDate": "2015-12-27T21:35:00+01:00",
+                            "airline": "Lufthansa",
+                            "flightNumber": "LF678",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/44",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-27T16:45:00+01:00",
+                            "landDate": "2015-12-27T18:50:00+01:00",
+                            "airline": "Air Canari2",
+                            "flightNumber": "CA678",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/2",
+                                "@type": "Airport",
+                                "name": "Londres",
+                                "code": "LON"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            }
+                        }
+                    ],
+                    "prices": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/prices/7",
+                            "@type": "Price",
+                            "price": 76,
+                            "agency": "Opodo",
+                            "url": "ghfjds"
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/prices/8",
+                            "@type": "Price",
+                            "price": 55,
+                            "agency": "Go Voyages",
+                            "url": "fjksdf"
+                        }
+                    ]
+                },
+                {
+                    "@id": "/flyback/web/app_dev.php/api/travels/5",
+                    "@type": "Travel",
+                    "flights": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/37",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 1,
+                            "takeOffDate": "2015-12-20T19:12:00+01:00",
+                            "landDate": "2015-12-20T20:10:00+01:00",
+                            "airline": "Lufthansa",
+                            "flightNumber": "LF678",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/38",
+                            "@type": "Flight",
+                            "indice": 2,
+                            "wayType": 1,
+                            "takeOffDate": "2015-12-20T23:00:00+01:00",
+                            "landDate": "2015-12-21T00:02:00+01:00",
+                            "airline": "Lufthansa",
+                            "flightNumber": "LF678",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/2",
+                                "@type": "Airport",
+                                "name": "Londres",
+                                "code": "LON"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/39",
+                            "@type": "Flight",
+                            "indice": 1,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-27T23:00:00+01:00",
+                            "landDate": "2015-12-28T06:00:00+01:00",
+                            "airline": "Lufthansa",
+                            "flightNumber": "LF678",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/2",
+                                "@type": "Airport",
+                                "name": "Londres",
+                                "code": "LON"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/4",
+                                "@type": "Airport",
+                                "name": "New York",
+                                "code": "NYC"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/40",
+                            "@type": "Flight",
+                            "indice": 2,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-28T09:00:00+01:00",
+                            "landDate": "2015-12-28T16:00:00+01:00",
+                            "airline": "Lufthansa",
+                            "flightNumber": "LF678",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/4",
+                                "@type": "Airport",
+                                "name": "New York",
+                                "code": "NYC"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            }
+                        },
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/flights/41",
+                            "@type": "Flight",
+                            "indice": 3,
+                            "wayType": 2,
+                            "takeOffDate": "2015-12-28T23:00:00+01:00",
+                            "landDate": "2015-12-29T01:00:00+01:00",
+                            "airline": "Lufthansa",
+                            "flightNumber": "LF678",
+                            "departure": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/3",
+                                "@type": "Airport",
+                                "name": "Berlin",
+                                "code": "BER"
+                            },
+                            "arrival": {
+                                "@id": "/flyback/web/app_dev.php/api/airports/1",
+                                "@type": "Airport",
+                                "name": "Paris",
+                                "code": "PAR"
+                            }
+                        }
+                    ],
+                    "prices": [
+                        {
+                            "@id": "/flyback/web/app_dev.php/api/prices/9",
+                            "@type": "Price",
+                            "price": 147,
+                            "agency": "BravoFly",
+                            "url": "bfsdbfjhs"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "nbAdults": 1,
+    "nbChildren": 0
+}

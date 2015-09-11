@@ -1,6 +1,6 @@
 <div class="travel-box travel-box-false" style="padding:20px; margin-top:{{showHideInfoOffset}}px" ng-hide="!showHideBoxBool">
 
-<div ng-hide="selectedTravel.hide[7]">
+<div ng-hide="shortHideBoxBool">
     <div class="btn-group btn-group-justified">
     <p class="btn btn-default btn-block" style="font-weight:bold;" ng-click="updateFilter(selectedTravel,-1)">Annulez la supression</p>
     </div>
@@ -11,8 +11,7 @@
     
         
     <div class="btn-group btn-group-justified" style="margin-top:4px;">
-        <p class="btn btn-default" ng-click="updateFilter(selectedTravel,1)"ng-hide="selectedTravel.hide[1]"><i class="glyphicon glyphicon-hourglass"></i> Trop long ({{selectedTravel.durationPrint}})</p>
-        <p class="btn btn-info" ng-click="updateFilter(selectedTravel,1)"ng-hide="!selectedTravel.hide[1]"><i class="glyphicon glyphicon-hourglass"></i> Trop long ({{selectedTravel.durationPrint}})</p>
+        <p class="btn btn-default" ng-click="updateFilter(selectedTravel,1)"><i class="glyphicon glyphicon-hourglass"></i> Trop long ({{selectedTravel.durationPrint}})</p>
         <p class="btn btn-default" ng-click="updateFilter(selectedTravel,2)"><i class="glyphicon glyphicon glyphicon-globe"></i> Trop d'escales</p>
     </div>  
     
@@ -21,10 +20,8 @@
     </th></tr></thead></table></div>
     
     <div class="btn-group btn-group-justified" style="margin-top:4px;">
-    <p class="btn btn-default" ng-click="updateFilter(selectedTravel,3)" ng-hide="selectedTravel.hide[3]"><i class="glyphicon glyphicon-time"></i> Trop tôt ({{selectedTravel.outwardTakeOffDate | date:'HH:mm'}})</p>
-    <p class="btn btn-info" ng-click="updateFilter(selectedTravel,3)" ng-hide="!selectedTravel.hide[3]"><i class="glyphicon glyphicon-time"></i> Trop tôt ({{selectedTravel.outwardTakeOffDate | date:'HH:mm'}})</p>
-    <p class="btn btn-default" ng-click="updateFilter(selectedTravel,4)" ng-hide="selectedTravel.hide[4]"><i class="glyphicon glyphicon-time"></i> Trop tard ({{selectedTravel.outwardTakeOffDate | date:'HH:mm'}})</p>
-    <p class="btn btn-info" ng-click="updateFilter(selectedTravel,4)" ng-hide="!selectedTravel.hide[4]"><i class="glyphicon glyphicon-time"></i> Trop tard ({{selectedTravel.outwardTakeOffDate | date:'HH:mm'}})</p>
+    <p class="btn btn-default" ng-click="updateFilter(selectedTravel,3)"><i class="glyphicon glyphicon-time"></i> Trop tôt ({{selectedTravel.outwardTakeOffDate | date:'HH:mm'}})</p>
+    <p class="btn btn-default" ng-click="updateFilter(selectedTravel,4)"><i class="glyphicon glyphicon-time"></i> Trop tard ({{selectedTravel.outwardTakeOffDate | date:'HH:mm'}})</p>
     </div>
     
     <div  class="table-responsive"><table class="table table-no-margin"><thead><tr><th>
@@ -33,14 +30,12 @@
     
 
     <div class="btn-group btn-group-justified" style="margin-top:4px;">
-    <p class="btn btn-default" ng-click="updateFilter(selectedTravel,5)" ng-hide="selectedTravel.hide[5]"><i class="glyphicon glyphicon-time"></i> Trop tôt ({{selectedTravel.inwardTakeOffDate | date:'HH:mm'}})</p>
-    <p class="btn btn-info" ng-click="updateFilter(selectedTravel,5)" ng-hide="!selectedTravel.hide[5]"><i class="glyphicon glyphicon-time"></i> Trop tôt ({{selectedTravel.inwardTakeOffDate | date:'HH:mm'}})</p>
-    <p class="btn btn-default" ng-click="updateFilter(selectedTravel,6)" ng-hide="selectedTravel.hide[6]"><i class="glyphicon glyphicon-time"></i> Trop tard ({{selectedTravel.inwardTakeOffDate | date:'HH:mm'}})</p>
-    <p class="btn btn-info" ng-click="updateFilter(selectedTravel,6)" ng-hide="!selectedTravel.hide[6]"><i class="glyphicon glyphicon-time"></i> Trop tard ({{selectedTravel.inwardTakeOffDate | date:'HH:mm'}})</p>
+    <p class="btn btn-default" ng-click="updateFilter(selectedTravel,5)"><i class="glyphicon glyphicon-time"></i> Trop tôt ({{selectedTravel.inwardTakeOffDate | date:'HH:mm'}})</p>
+    <p class="btn btn-default" ng-click="updateFilter(selectedTravel,6)"><i class="glyphicon glyphicon-time"></i> Trop tard ({{selectedTravel.inwardTakeOffDate | date:'HH:mm'}})</p>
     </div>
 
 </div>
-    <div ng-hide="!selectedTravel.hide[7]">
+    <div ng-hide="!shortHideBoxBool">
         <p class="btn btn-default btn-block" ng-click="updateFilter(selectedTravel,0)" style="font-weight:bold;"> Annulez la suppression et le filtre</p>
     </div>
     

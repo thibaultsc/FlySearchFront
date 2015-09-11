@@ -205,6 +205,9 @@ time.icon span
 .table-no-margin {
     margin-bottom:0px;
 }
+.table-xs-margin {
+    margin-bottom:10px;
+}
 
 
 
