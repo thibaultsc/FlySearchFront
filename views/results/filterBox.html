@@ -25,17 +25,6 @@
                 <p class="btn {{filterBoxBtnStyle.activeEscale}} btn-block" ng-click="checkBoxChange(1)">1 Escale Max</p>
             </div>
                 <p class="btn {{filterBoxBtnStyle.activeEscales}} btn-block" ng-click="checkBoxChange(0)">Tous les vols</p>
-            <div class="checkbox" ng-hide="true">
-                <label style="display:block;">
-                    <input type="checkbox" ng-model="filter.direct" ng-change="filterFlySearchTravels()"> Direct
-                </label>
-                <label style="display:block;">
-                    <input type="checkbox" ng-model="filter.escale" ng-change="escaleCheckBoxChange()"> 1 Escale
-                </label> 
-                <label style="display:block;">
-                    <input type="checkbox" ng-model="filter.escales" ng-change="filterFlySearchTravels()"> 2 Escales
-                </label> 
-            </div>
             
             <div  class="table-responsive"><table class="table table-no-margin"><thead><tr><th>
                 Durée
@@ -50,7 +39,7 @@
             <div style="padding-left:20px;padding-right:15px; position:relative;">
                 <div ui-slider min="{{flySearch.minDuration}}" max="{{flySearch.maxDuration}}" ng-change="filterFlySearchTravels()" ng-model="filter.duration"></div>
             </div>
-            <span class="h6" style="font-style:italic; margin:4px; margin-left:15px;">     entre {{flySearch.minDuration |date: 'HH': 'UTC'}}h{{flySearch.minDuration |date: 'mm': 'UTC'}}m et {{filter.duration |date: 'HH': 'UTC'}}h{{filter.duration |date: 'mm': 'UTC'}}m  </span>
+            <span class="h6" style="font-style:italic; margin:4px; margin-left:15px;">entre {{printDuration("0",flySearch.minDuration)}} et {{printDuration("0",filter.duration)}}</span>
             
             
             

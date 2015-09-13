@@ -18,7 +18,7 @@
             <div class="col-xs-4" style="text-align:center;">
                 <span class="h5" style="margin-top:0px;">{{travel.outwardType}}</span>
                 <div class="fly-arrow arrow-{{travel.outwardTypeCss}}" style="margin-top:0px;"></div>
-                <div class="leg-stops-green" style="margin-top:-4px;">{{travel.outwardDurationPrint}}</div>
+                <div class="leg-stops-green" style="margin-top:-4px;">{{printDuration("0",travel.outwardDuration)}}</div>
             </div>
             <div class="col-xs-3" style="text-align:center;">
                 <span class="h4" style="font-weight:bold;">{{travel.outwardLandDate | date:'HH:mm'}}<h6 style="display:inline;" ng-hide="{{travel.outwardDayDiff}} == 0">(+1)</h6></span>
@@ -42,7 +42,7 @@
                 <span class="h5" style="margin-top:0px;">{{travel.inwardType}}</span>
                 <div class="fly-arrow arrow-{{travel.inwardTypeCss}}" style="margin-top:0px;"></div>
 
-                <div class="leg-stops-green" style="margin-top:-4px;">{{travel.inwardDurationPrint}}</div>
+                <div class="leg-stops-green" style="margin-top:-4px;">{{printDuration("0",travel.inwardDuration)}}</div>
 
 
             </div>

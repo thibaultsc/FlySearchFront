@@ -11,7 +11,7 @@
     
         
     <div class="btn-group btn-group-justified" style="margin-top:4px;">
-        <p class="btn btn-default" ng-click="updateFilter(selectedTravel,1)"><i class="glyphicon glyphicon-hourglass"></i> Trop long ({{selectedTravel.durationPrint}})</p>
+        <p class="btn btn-default" ng-click="updateFilter(selectedTravel,1)"><i class="glyphicon glyphicon-hourglass"></i> Trop long ({{printDuration("0",selectedTravel.duration)}})</p>
         <p class="btn btn-default" ng-click="updateFilter(selectedTravel,2)"><i class="glyphicon glyphicon glyphicon-globe"></i> Trop d'escales</p>
     </div>  
     

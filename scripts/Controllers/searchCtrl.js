@@ -46,7 +46,7 @@ flyWkAppControllers.controller('searchCtrl', ['$scope', '$http', 'Restangular',
         
         $scope.updatePeople = function() {
             $scope.voyageurDetails = $scope.voyageurDetailsFunc($scope.flySearch.nbAdults,$scope.flySearch.nbChildren);
-        };
+        }
         $scope.flySearch.nbAdults = '1';
         $scope.flySearch.nbChildren = '0';
         $scope.updatePeople();
